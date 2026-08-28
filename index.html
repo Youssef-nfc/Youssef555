@@ -315,7 +315,6 @@ canvas{
     transition: 0.3s;
 }
 
-/* نمط إضاءة الهاتف بالكامل عند تفعيل الفلاش */
 body.screen-flash-active {
     background: #ffffff !important;
 }
@@ -414,12 +413,12 @@ video{
     aspect-ratio:16/10;
     object-fit:cover;
     border: 1px solid var(--border-color);
+    margin-bottom: 14px;
 }
 
 .recordControls{
     display:flex;
     gap:10px;
-    margin-top:14px;
 }
 
 .recordControls button{
@@ -432,12 +431,6 @@ video{
     transition: 0.2s;
 }
 
-.cameraBtn{
-    background:#14141c;
-    color:white;
-    border: 1px solid var(--border-color);
-}
-
 .recordBtn{
     background:#b81c1c;
     color:white;
@@ -446,18 +439,34 @@ video{
 .stopBtn{
     background:#22222d;
     color:white;
+    border: 1px solid var(--border-color);
 }
 
-#downloadLink{
-    display:none;
-    margin-top:15px;
-    text-align:center;
-    background:var(--gold);
-    color:#000;
-    padding:15px;
-    border-radius:16px;
-    text-decoration:none;
-    font-weight:bold;
+/* Action panel بعد التسجيل (حفظ أو حذف) */
+.postRecordActions {
+    display: none;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.postRecordActions button {
+    flex: 1;
+    padding: 15px;
+    border-radius: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 0;
+}
+
+.saveVideoBtn {
+    background: var(--gold);
+    color: #000;
+}
+
+.deleteVideoBtn {
+    background: #331212;
+    color: #ff5555;
+    border: 1px solid #552222 !important;
 }
 
 .status{
@@ -480,7 +489,7 @@ video{
     <button onclick="openPage('snake')">🐍 Snake Game</button>
     <button onclick="openPage('calculator')">🧮 Calculator</button>
     <button onclick="openPage('flashlight')">🔦 Flashlight</button>
-    <button onclick="openPage('recorder')">🎥 Video Recorder</button>
+    <button onclick="openPage('recorder')">🎥 Screen Recorder</button>
 </div>
 
 <main>
@@ -568,18 +577,23 @@ video{
 <!-- ================= RECORDER ================= -->
 <section id="recorder" class="page">
     <div class="hero">
-        <h1>🎥 RECORDER</h1>
-        <p>Record directly from your phone.</p>
+        <h1>🎥 SCREEN RECORDER</h1>
+        <p>Record your phone screen for Reels & Ads.</p>
     </div>
     <div class="recorder">
-        <video id="video" autoplay muted playsinline></video>
-        <div class="recordControls">
-            <button class="cameraBtn" onclick="openCamera()">CAMERA</button>
-            <button class="recordBtn" onclick="startRecording()">● REC</button>
-            <button class="stopBtn" onclick="stopRecording()">STOP</button>
+        <video id="videoPreview" autoplay playsinline controls></video>
+        
+        <div class="recordControls" id="mainRecordControls">
+            <button class="recordBtn" onclick="startScreenRecording()">● START REC</button>
+            <button class="stopBtn" onclick="stopScreenRecording()">■ STOP</button>
         </div>
-        <div class="status" id="recordStatus">Camera not started</div>
-        <a id="downloadLink">⬇️ SAVE VIDEO</a>
+
+        <div class="postRecordActions" id="postRecordActions">
+            <button class="saveVideoBtn" onclick="saveVideo()">💾 SAVE VIDEO</button>
+            <button class="deleteVideoBtn" onclick="deleteVideo()">🗑️ DELETE</button>
+        </div>
+
+        <div class="status" id="recordStatus">Ready to record screen</div>
     </div>
 </section>
 
@@ -773,7 +787,7 @@ function calculate(){
     }
 }
 
-// --- FLASHLIGHT (تفعيل إضاءة الهاتف بالكامل) ---
+// --- FLASHLIGHT ---
 function flashOn(){
     document.getElementById("flashCircle").classList.add("on");
     document.getElementById("flashStatus").innerText = "ON 💡";
@@ -786,41 +800,89 @@ function flashOff(){
     document.body.classList.remove("screen-flash-active");
 }
 
-// --- VIDEO RECORDER ---
-let stream = null, recorder = null, chunks = [];
+// --- SCREEN RECORDER FOR REELS & ADS ---
+let screenStream = null;
+let screenRecorder = null;
+let recordedChunks = [];
+let recordedBlobUrl = null;
 
-async function openCamera(){
-    try{
-        stream = await navigator.mediaDevices.getUserMedia({video:true, audio:true});
-        document.getElementById("video").srcObject = stream;
-        document.getElementById("recordStatus").innerText = "Camera ready";
-    } catch{
-        document.getElementById("recordStatus").innerText = "Camera permission denied";
+async function startScreenRecording(){
+    try {
+        // طلب تصوير الشاشة (Screen Capture API)
+        screenStream = await navigator.mediaDevices.getDisplayMedia({
+            video: { mediaSource: "screen" },
+            audio: true
+        });
+
+        recordedChunks = [];
+        screenRecorder = new MediaRecorder(screenStream, { mimeType: 'video/webm; codecs=vp9' });
+
+        screenRecorder.ondataavailable = (e) => {
+            if (e.data.size > 0) {
+                recordedChunks.push(e.data);
+            }
+        };
+
+        screenRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: "video/webm" });
+            recordedBlobUrl = URL.createObjectURL(blob);
+            
+            // عرض الفيديو في المداومة لمعاينته
+            const videoPreview = document.getElementById("videoPreview");
+            videoPreview.src = recordedBlobUrl;
+            videoPreview.controls = true;
+
+            // تبديل الأزرار لإظهار خيارات الحفظ أو الحذف
+            document.getElementById("mainRecordControls").style.display = "none";
+            document.getElementById("postRecordActions").style.display = "flex";
+            document.getElementById("recordStatus").innerText = "Recording finished! Choose to save or delete.";
+        };
+
+        // إذا قام المستخدم بإيقاف المشاركة من النظام (الشريط العلوي للهاتف)
+        screenStream.getVideoTracks()[0].onended = () => {
+            stopScreenRecording();
+        };
+
+        screenRecorder.start();
+        document.getElementById("recordStatus").innerText = "🔴 Recording screen... You can switch apps now!";
+    } catch (err) {
+        console.error(err);
+        document.getElementById("recordStatus").innerText = "Permission denied or screen recording not supported on this browser.";
     }
 }
 
-function startRecording(){
-    if(!stream){ alert("Open CAMERA first."); return; }
-    chunks = [];
-    recorder = new MediaRecorder(stream);
-    recorder.ondataavailable = e=>{ if(e.data.size > 0) chunks.push(e.data); };
-    recorder.onstop = ()=>{
-        const blob = new Blob(chunks, {type:"video/webm"});
-        const url = URL.createObjectURL(blob);
-        const link = document.getElementById("downloadLink");
-        link.href = url;
-        link.download = "my-recording.webm";
-        link.style.display = "block";
-        document.getElementById("recordStatus").innerText = "Recording finished";
-    };
-    recorder.start();
-    document.getElementById("recordStatus").innerText = "🔴 Recording...";
+function stopScreenRecording(){
+    if (screenRecorder && screenRecorder.state === "recording") {
+        screenRecorder.stop();
+    }
+    if (screenStream) {
+        screenStream.getTracks().forEach(track => track.stop());
+    }
 }
 
-function stopRecording(){
-    if(recorder && recorder.state === "recording"){
-        recorder.stop();
-    }
+function saveVideo(){
+    if (!recordedBlobUrl) return;
+    const a = document.createElement('a');
+    a.href = recordedBlobUrl;
+    a.download = 'codelab-reels-ad.webm';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    
+    document.getElementById("recordStatus").innerText = "Video saved successfully! Ready for Instagram Reels.";
+    resetRecorderUI();
+}
+
+function deleteVideo(){
+    recordedBlobUrl = null;
+    document.getElementById("videoPreview").src = "";
+    document.getElementById("recordStatus").innerText = "Video deleted.";
+    resetRecorderUI();
+}
+
+function resetRecorderUI(){
+    document.getElementById("mainRecordControls").style.display = "flex";
+    document.getElementById("postRecordActions").style.display = "none";
 }
 </script>
 
