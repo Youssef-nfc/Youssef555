@@ -3,207 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منتجك المميز - صفحة الهبوط</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>لعبة القفز بالصوت</title>
     <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --text-dark: #1f2937;
-            --text-light: #6b7280;
-            --bg-light: #f9fafb;
-            --white: #ffffff;
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Tajawal', sans-serif;
         }
 
         body {
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-
-        /* الهيدر */
-        header {
-            background-color: var(--white);
-            padding: 1.5rem 5%;
+            background-color: #1a1a2e;
+            color: #ffffff;
+            font-family: system-ui, -apple-system, sans-serif;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
         }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: var(--primary);
-        }
-
-        .nav-btn {
-            background-color: var(--primary);
-            color: var(--white);
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 700;
-            transition: 0.3s;
-        }
-
-        .nav-btn:hover {
-            background-color: var(--primary-hover);
-        }
-
-        /* القسم الرئيسي */
-        .hero {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            padding: 4rem 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-            gap: 2rem;
-        }
-
-        .hero-text {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .hero-text h1 {
-            font-size: 2.8rem;
-            font-weight: 900;
-            line-height: 1.2;
-            margin-bottom: 1rem;
-        }
-
-        .hero-text p {
+        h1 {
             font-size: 1.2rem;
-            color: var(--text-light);
-            margin-bottom: 2rem;
+            margin-bottom: 10px;
+            color: #e94560;
         }
 
-        .cta-btn {
-            display: inline-block;
-            background-color: var(--primary);
-            color: var(--white);
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border-radius: 8px;
-            text-decoration: none;
-            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
-            transition: 0.3s;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-2px);
-            background-color: var(--primary-hover);
-        }
-
-        .hero-image {
-            flex: 1;
-            min-width: 300px;
-            text-align: center;
-        }
-
-        .hero-image img {
-            width: 100%;
-            max-width: 500px;
+        #game-container {
+            position: relative;
+            width: 340px;
+            height: 350px;
+            background: linear-gradient(180deg, #0f3460 0%, #16213e 100%);
+            border: 3px solid #e94560;
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
         }
 
-        /* قسم المميزات */
-        .features {
-            background-color: var(--white);
-            padding: 4rem 5%;
+        /* الشخصية */
+        #player {
+            position: absolute;
+            bottom: 60px;
+            left: 30px;
+            width: 24px;
+            height: 36px;
+            background-color: #e94560;
+            border-radius: 4px;
+            box-shadow: 0 0 10px #e94560;
+            transition: bottom 0.12s ease-out, left 0.12s linear;
+            z-index: 10;
+        }
+
+        /* عين الشخصية للتوضيح */
+        #player::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 4px;
+            width: 6px;
+            height: 6px;
+            background-color: #fff;
+            border-radius: 50%;
+        }
+
+        /* المنصات / المربعات */
+        .platform {
+            position: absolute;
+            bottom: 0;
+            height: 60px;
+            background-color: #0f3460;
+            border-top: 4px solid #533483;
+            border-radius: 4px 4px 0 0;
+        }
+
+        /* مؤشر قوة الصوت */
+        #volume-bar-container {
+            width: 340px;
+            height: 12px;
+            background-color: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 6px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        #volume-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #4ecca3;
+            transition: width 0.05s ease;
+        }
+
+        /* الأزرار والنصوص */
+        #controls {
+            margin-top: 15px;
             text-align: center;
         }
 
-        .features h2 {
-            font-size: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .feature-card {
-            padding: 2rem;
+        button {
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: bold;
+            background-color: #e94560;
+            color: #ffffff;
+            border: none;
             border-radius: 8px;
-            background-color: var(--bg-light);
-            border: 1px solid #e5e7eb;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
         }
 
-        .feature-card h3 {
-            margin-bottom: 0.5rem;
-            color: var(--primary);
+        button:active {
+            transform: scale(0.98);
         }
 
-        .feature-card p {
-            color: var(--text-light);
-        }
-
-        /* الفوتر */
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-light);
+        #status {
+            margin-top: 10px;
             font-size: 0.9rem;
-            border-top: 1px solid #e5e7eb;
+            color: #4ecca3;
+        }
+
+        #score {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+            z-index: 20;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">شعارك</div>
-        <a href="#cta" class="nav-btn">ابدأ الآن</a>
-    </header>
+    <h1>لعبة القفز بالصوت 🎤</h1>
 
-    <section class="hero">
-        <div class="hero-text">
-            <h1>الحل الأمثل لتطوير أعمالك وسرعة إنجازك</h1>
-            <p>نساعدك على تنظيم مهامك وزيادة إنتاجيتك باستخدام أحدث التقنيات وبأسهل الطرق الممكنة.</p>
-            <a href="#cta" class="cta-btn" id="cta">اشترك مجاناً اليوم</a>
-        </div>
-        <div class="hero-image">
-            <img src="https://via.placeholder.com/500x350/4f46e5/ffffff?text=صورة+المنتج" alt="معاينة المنتج">
-        </div>
-    </section>
+    <div id="game-container">
+        <div id="score">النقاط: 0</div>
+        <div id="player"></div>
+        <div class="platform" id="plat1" style="left: 10px; width: 70px;"></div>
+        <div class="platform" id="plat2" style="left: 140px; width: 60px;"></div>
+    </div>
 
-    <section class="features">
-        <h2>لماذا نعد الخيار الأفضل؟</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <h3>⚡ سهولة الاستخدام</h3>
-                <p>واجهة بسيطة ومصممة بعناية لتناسب جميع المستخدمين دون تعقيد.</p>
-            </div>
-            <div class="feature-card">
-                <h3>🔒 أمان متكامل</h3>
-                <p>نضمن حماية بياناتك وتشفيرها بأعلى معايير الأمان العالمية.</p>
-            </div>
-            <div class="feature-card">
-                <h3>🛠️ دعم على مدار الساعة</h3>
-                <p>فريقنا جاهز للمساعدة والإجابة على استفساراتك في أي وقت.</p>
-            </div>
-        </div>
-    </section>
+    <div id="volume-bar-container">
+        <div id="volume-bar"></div>
+    </div>
 
-    <footer>
-        <p>© 2026 جميع الحقوق محفوظة لـ اسم موقعك.</p>
-    </footer>
+    <div id="controls">
+        <button id="start-btn">ابدأ اللعب بالميكروفون</button>
+        <p id="status">اضغط على الزر واسمح للميكروفون</p>
+    </div>
 
+    <script>
+        const player = document.getElementById('player');
+        const startBtn = document.getElementById('start-btn');
+        const statusText = document.getElementById('status');
+        const volumeBar = document.getElementById('volume-bar');
+        const scoreText = document.getElementById('score');
+        const plat1 = document.getElementById('plat1');
+        const plat2 = document.getElementById('plat2');
+
+        let audioContext;
+        let analyser;
+        let microphone;
+        let isJumping = false;
+        let playerLeft = 30;
+        const baseBottom = 60;
+        let score = 0;
+
+        let currentPlat = { left: 10, width: 70 };
+        let nextPlat = { left: 140, width: 60 };
+
+        startBtn.addEventListener('click', async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                microphone = audioContext.createMediaStreamSource(stream);
+                
+                microphone.connect(analyser);
+                analyser.fftSize = 256;
+                
+                statusText.innerText = "الميكروفون شغال! تكلم أو غوت باش تنقز!";
+                startBtn.style.display = 'none';
+                
+                listenToVoice();
+            } catch (err) {
+                statusText.innerText = "خاصك تعطيهم إذن الميكروفون باش تخدم اللعبة!";
+            }
+        });
+
+        function listenToVoice() {
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+            
+            function checkAudio() {
+                analyser.getByteFrequencyData(dataArray);
+                
+                let sum = 0;
+                for (let i = 0; i < dataArray.length; i++) {
+                    sum += dataArray[i];
+                }
+                let averageVolume = sum / dataArray.length;
+                
+                // تحديث شريط مستوى الصوت
+                let volumePercent = Math.min((averageVolume / 100) * 100, 100);
+                volumeBar.style.width = volumePercent + '%';
+
+                // القفز عند تجاوز شدة الصوت 25
+                if (averageVolume > 25 && !isJumping) {
+                    jump(averageVolume);
+                }
+                
+                requestAnimationFrame(checkAudio);
+            }
+            
+            checkAudio();
+        }
+
+        function jump(volume) {
+            isJumping = true;
+            
+            // حساب مسافة وارتفاع القفزة حسب الصوت
+            let jumpHeight = Math.min(volume * 1.8, 140); 
+            let jumpDistance = Math.min(volume * 1.6, 150);
+
+            // مرحلة صعود القفزة
+            player.style.bottom = (baseBottom + jumpHeight) + 'px';
+            player.style.left = (playerLeft + (jumpDistance / 2)) + 'px';
+
+            // مرحلة النزول
+            setTimeout(() => {
+                playerLeft += jumpDistance;
+                player.style.bottom = baseBottom + 'px';
+                player.style.left = playerLeft + 'px';
+
+                setTimeout(() => {
+                    checkLanding();
+                }, 120);
+            }, 120);
+        }
+
+        function checkLanding() {
+            const playerCenter = playerLeft + 12;
+
+            // كشف الوقوف على المربع الثاني
+            if (playerCenter >= nextPlat.left && playerCenter <= (nextPlat.left + nextPlat.width)) {
+                score++;
+                scoreText.innerText = "النقاط: " + score;
+                statusText.innerText = "قفزة ناجحة! استمر!";
+                
+                // تحريك المنصات وإنشاء منصة جديدة
+                shiftPlatforms();
+            } else {
+                // الخسارة والسقوط
+                player.style.bottom = '0px';
+                statusText.innerText = "طحتي فالفراغ! عاود المرة الجاية.";
+                setTimeout(() => {
+                    resetGame();
+                }, 1500);
+            }
+
+            isJumping = false;
+        }
+
+        function shiftPlatforms() {
+            currentPlat = { ...nextPlat };
+            
+            // حساب مكان ومقاس المنصة الجديدة عشوائياً
+            let newLeft = currentPlat.left + currentPlat.width + Math.floor(Math.random() * 60 + 40);
+            let newWidth = Math.floor(Math.random() * 40 + 50);
+
+            // إعادة ضبط موقع اللاعب والمنصات
+            let offset = currentPlat.left - 10;
+            playerLeft -= offset;
+            currentPlat.left = 10;
+            newLeft -= offset;
+
+            plat1.style.left = currentPlat.left + 'px';
+            plat1.style.width = currentPlat.width + 'px';
+
+            plat2.style.left = newLeft + 'px';
+            plat2.style.width = newWidth + 'px';
+
+            nextPlat = { left: newLeft, width: newWidth };
+
+            player.style.transition = 'none';
+            player.style.left = playerLeft + 'px';
+            setTimeout(() => {
+                player.style.transition = 'bottom 0.12s ease-out, left 0.12s linear';
+            }, 50);
+        }
+
+        function resetGame() {
+            score = 0;
+            scoreText.innerText = "النقاط: 0";
+            playerLeft = 30;
+            
+            currentPlat = { left: 10, width: 70 };
+            nextPlat = { left: 140, width: 60 };
+
+            plat1.style.left = '10px';
+            plat1.style.width = '70px';
+            plat2.style.left = '140px';
+            plat2.style.width = '60px';
+
+            player.style.bottom = baseBottom + 'px';
+            player.style.left = playerLeft + 'px';
+            statusText.innerText = "تكلم باش تبدأ من جديد!";
+            isJumping = false;
+        }
+    </script>
 </body>
 </html>
