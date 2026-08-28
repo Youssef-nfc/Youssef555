@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لعبة القفز بالصوت</title>
+    <title>لعبة القفز الاحترافية بالصوت</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             background-color: #1a1a2e;
@@ -23,11 +19,7 @@
             overflow: hidden;
         }
 
-        h1 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: #e94560;
-        }
+        h1 { font-size: 1.2rem; margin-bottom: 10px; color: #e94560; }
 
         #game-container {
             position: relative;
@@ -50,11 +42,15 @@
             background-color: #e94560;
             border-radius: 4px;
             box-shadow: 0 0 10px #e94560;
-            transition: bottom 0.12s ease-out, left 0.12s linear;
+            transition: bottom 0.2s cubic-bezier(0.25, 1, 0.5, 1), left 0.2s linear, transform 0.1s;
             z-index: 10;
         }
 
-        /* عين الشخصية للتوضيح */
+        #player.charging {
+            transform: scaleY(0.7); /* ينكمش عند شحن القوة */
+            background-color: #ff9f43;
+        }
+
         #player::after {
             content: '';
             position: absolute;
@@ -66,7 +62,7 @@
             border-radius: 50%;
         }
 
-        /* المنصات / المربعات */
+        /* المنصات */
         .platform {
             position: absolute;
             bottom: 0;
@@ -76,29 +72,25 @@
             border-radius: 4px 4px 0 0;
         }
 
-        /* مؤشر قوة الصوت */
-        #volume-bar-container {
+        /* شريط القوة الشاحنة */
+        #charge-bar-container {
             width: 340px;
-            height: 12px;
+            height: 14px;
             background-color: #16213e;
-            border: 1px solid #0f3460;
-            border-radius: 6px;
+            border: 2px solid #0f3460;
+            border-radius: 7px;
             margin-top: 15px;
             overflow: hidden;
         }
 
-        #volume-bar {
+        #charge-bar {
             width: 0%;
             height: 100%;
-            background-color: #4ecca3;
-            transition: width 0.05s ease;
+            background: linear-gradient(90deg, #4ecca3, #ff9f43, #e94560);
+            transition: width 0.05s linear;
         }
 
-        /* الأزرار والنصوص */
-        #controls {
-            margin-top: 15px;
-            text-align: center;
-        }
+        #controls { margin-top: 15px; text-align: center; }
 
         button {
             padding: 12px 28px;
@@ -109,43 +101,25 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
         }
 
-        button:active {
-            transform: scale(0.98);
-        }
-
-        #status {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: #4ecca3;
-        }
-
-        #score {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #fff;
-            z-index: 20;
-        }
+        #status { margin-top: 10px; font-size: 0.9rem; color: #4ecca3; }
+        #score { position: absolute; top: 10px; right: 15px; font-size: 1.1rem; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <h1>لعبة القفز بالصوت 🎤</h1>
+    <h1>لعبة شحن القفزة بالصوت 🎤</h1>
 
     <div id="game-container">
         <div id="score">النقاط: 0</div>
         <div id="player"></div>
         <div class="platform" id="plat1" style="left: 10px; width: 70px;"></div>
-        <div class="platform" id="plat2" style="left: 140px; width: 60px;"></div>
+        <div class="platform" id="plat2" style="left: 160px; width: 60px;"></div>
     </div>
 
-    <div id="volume-bar-container">
-        <div id="volume-bar"></div>
+    <div id="charge-bar-container">
+        <div id="charge-bar"></div>
     </div>
 
     <div id="controls">
@@ -157,7 +131,7 @@
         const player = document.getElementById('player');
         const startBtn = document.getElementById('start-btn');
         const statusText = document.getElementById('status');
-        const volumeBar = document.getElementById('volume-bar');
+        const chargeBar = document.getElementById('charge-bar');
         const scoreText = document.getElementById('score');
         const plat1 = document.getElementById('plat1');
         const plat2 = document.getElementById('plat2');
@@ -165,31 +139,32 @@
         let audioContext;
         let analyser;
         let microphone;
+
+        let isCharging = false;
         let isJumping = false;
+        let chargePower = 0; // القوة المجمعة (0 - 100)
         let playerLeft = 30;
         const baseBottom = 60;
         let score = 0;
 
         let currentPlat = { left: 10, width: 70 };
-        let nextPlat = { left: 140, width: 60 };
+        let nextPlat = { left: 160, width: 60 };
 
         startBtn.addEventListener('click', async () => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 analyser = audioContext.createAnalyser();
                 microphone = audioContext.createMediaStreamSource(stream);
-                
                 microphone.connect(analyser);
                 analyser.fftSize = 256;
                 
-                statusText.innerText = "الميكروفون شغال! تكلم أو غوت باش تنقز!";
+                statusText.innerText = "تحدث لتجمع القوة.. واسكت باش تنقز!";
                 startBtn.style.display = 'none';
                 
                 listenToVoice();
             } catch (err) {
-                statusText.innerText = "خاصك تعطيهم إذن الميكروفون باش تخدم اللعبة!";
+                statusText.innerText = "خاصك تعطيهم إذن الميكروفون!";
             }
         });
 
@@ -204,14 +179,25 @@
                     sum += dataArray[i];
                 }
                 let averageVolume = sum / dataArray.length;
-                
-                // تحديث شريط مستوى الصوت
-                let volumePercent = Math.min((averageVolume / 100) * 100, 100);
-                volumeBar.style.width = volumePercent + '%';
 
-                // القفز عند تجاوز شدة الصوت 25
-                if (averageVolume > 25 && !isJumping) {
-                    jump(averageVolume);
+                // إذا كان الصوت قوي (أكبر من 20) والشخصية ما كاتنقزش
+                if (averageVolume > 20 && !isJumping) {
+                    isCharging = true;
+                    player.classList.add('charging');
+                    
+                    // زيادة القوة طالما هناك صوت
+                    if (chargePower < 100) {
+                        chargePower += 2.5; 
+                    }
+                    chargeBar.style.width = chargePower + '%';
+                } 
+                // إذا سكت اللاعب وكانت القوة مجمعة -> ينقز فوراً!
+                else if (isCharging && !isJumping) {
+                    isCharging = false;
+                    player.classList.remove('charging');
+                    executeJump(chargePower);
+                    chargePower = 0;
+                    chargeBar.style.width = '0%';
                 }
                 
                 requestAnimationFrame(checkAudio);
@@ -220,18 +206,18 @@
             checkAudio();
         }
 
-        function jump(volume) {
+        function executeJump(power) {
             isJumping = true;
             
-            // حساب مسافة وارتفاع القفزة حسب الصوت
-            let jumpHeight = Math.min(volume * 1.8, 140); 
-            let jumpDistance = Math.min(volume * 1.6, 150);
+            // حساب المسافة على حسب شحال الوقت اللي غوت فيه
+            let jumpDistance = (power / 100) * 220; // أقصى مسافة 220px
+            let jumpHeight = Math.min((power / 100) * 150 + 40, 160);
 
-            // مرحلة صعود القفزة
+            // صعود القفزة
             player.style.bottom = (baseBottom + jumpHeight) + 'px';
             player.style.left = (playerLeft + (jumpDistance / 2)) + 'px';
 
-            // مرحلة النزول
+            // نزول القفزة
             setTimeout(() => {
                 playerLeft += jumpDistance;
                 player.style.bottom = baseBottom + 'px';
@@ -239,25 +225,21 @@
 
                 setTimeout(() => {
                     checkLanding();
-                }, 120);
-            }, 120);
+                }, 200);
+            }, 200);
         }
 
         function checkLanding() {
             const playerCenter = playerLeft + 12;
 
-            // كشف الوقوف على المربع الثاني
             if (playerCenter >= nextPlat.left && playerCenter <= (nextPlat.left + nextPlat.width)) {
                 score++;
                 scoreText.innerText = "النقاط: " + score;
-                statusText.innerText = "قفزة ناجحة! استمر!";
-                
-                // تحريك المنصات وإنشاء منصة جديدة
+                statusText.innerText = "قفزة في المحل! واصل!";
                 shiftPlatforms();
             } else {
-                // الخسارة والسقوط
                 player.style.bottom = '0px';
-                statusText.innerText = "طحتي فالفراغ! عاود المرة الجاية.";
+                statusText.innerText = "طحتي فالفراغ! حاول تظبط الوقت ديال الصوت.";
                 setTimeout(() => {
                     resetGame();
                 }, 1500);
@@ -268,12 +250,9 @@
 
         function shiftPlatforms() {
             currentPlat = { ...nextPlat };
-            
-            // حساب مكان ومقاس المنصة الجديدة عشوائياً
-            let newLeft = currentPlat.left + currentPlat.width + Math.floor(Math.random() * 60 + 40);
-            let newWidth = Math.floor(Math.random() * 40 + 50);
+            let newLeft = currentPlat.left + currentPlat.width + Math.floor(Math.random() * 70 + 30);
+            let newWidth = Math.floor(Math.random() * 30 + 50);
 
-            // إعادة ضبط موقع اللاعب والمنصات
             let offset = currentPlat.left - 10;
             playerLeft -= offset;
             currentPlat.left = 10;
@@ -290,7 +269,7 @@
             player.style.transition = 'none';
             player.style.left = playerLeft + 'px';
             setTimeout(() => {
-                player.style.transition = 'bottom 0.12s ease-out, left 0.12s linear';
+                player.style.transition = 'bottom 0.2s cubic-bezier(0.25, 1, 0.5, 1), left 0.2s linear';
             }, 50);
         }
 
@@ -300,16 +279,16 @@
             playerLeft = 30;
             
             currentPlat = { left: 10, width: 70 };
-            nextPlat = { left: 140, width: 60 };
+            nextPlat = { left: 160, width: 60 };
 
             plat1.style.left = '10px';
             plat1.style.width = '70px';
-            plat2.style.left = '140px';
+            plat2.style.left = '160px';
             plat2.style.width = '60px';
 
             player.style.bottom = baseBottom + 'px';
             player.style.left = playerLeft + 'px';
-            statusText.innerText = "تكلم باش تبدأ من جديد!";
+            statusText.innerText = "تكلم باش تبدأ تشحن القفزة!";
             isJumping = false;
         }
     </script>
