@@ -1,296 +1,828 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لعبة القفز الاحترافية بالصوت</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CODE⚡LAB PRO</title>
 
-        body {
-            background-color: #1a1a2e;
-            color: #ffffff;
-            font-family: system-ui, -apple-system, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
+<style>
+:root {
+    --bg-color: #030305;
+    --card-bg: #0d0d12;
+    --border-color: #22222d;
+    --gold: #f0c400;
+    --gold-glow: rgba(240, 196, 0, 0.35);
+    --text-main: #ffffff;
+    --text-muted: #888895;
+}
 
-        h1 { font-size: 1.2rem; margin-bottom: 10px; color: #e94560; }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
 
-        #game-container {
-            position: relative;
-            width: 340px;
-            height: 350px;
-            background: linear-gradient(180deg, #0f3460 0%, #16213e 100%);
-            border: 3px solid #e94560;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-        }
+body{
+    font-family:'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background:var(--bg-color);
+    color:var(--text-main);
+    min-height:100vh;
+    overflow-x:hidden;
+    transition: background 0.3s;
+}
 
-        /* الشخصية */
-        #player {
-            position: absolute;
-            bottom: 60px;
-            left: 30px;
-            width: 24px;
-            height: 36px;
-            background-color: #e94560;
-            border-radius: 4px;
-            box-shadow: 0 0 10px #e94560;
-            transition: bottom 0.2s cubic-bezier(0.25, 1, 0.5, 1), left 0.2s linear, transform 0.1s;
-            z-index: 10;
-        }
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:70px;
+    background:rgba(3, 3, 5, 0.85);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border-color);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+    z-index:1000;
+}
 
-        #player.charging {
-            transform: scaleY(0.7); /* ينكمش عند شحن القوة */
-            background-color: #ff9f43;
-        }
+.logo{
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:3px;
+    color:var(--gold);
+    text-shadow: 0 0 15px var(--gold-glow);
+}
 
-        #player::after {
-            content: '';
-            position: absolute;
-            top: 6px;
-            left: 4px;
-            width: 6px;
-            height: 6px;
-            background-color: #fff;
-            border-radius: 50%;
-        }
+.menuBtn{
+    width:46px;
+    height:46px;
+    border:1px solid var(--border-color);
+    background:#121218;
+    color:var(--gold);
+    border-radius:14px;
+    font-size:22px;
+    cursor:pointer;
+    transition: 0.3s;
+}
 
-        /* المنصات */
-        .platform {
-            position: absolute;
-            bottom: 0;
-            height: 60px;
-            background-color: #0f3460;
-            border-top: 4px solid #533483;
-            border-radius: 4px 4px 0 0;
-        }
+.menuBtn:active {
+    transform: scale(0.9);
+}
 
-        /* شريط القوة الشاحنة */
-        #charge-bar-container {
-            width: 340px;
-            height: 14px;
-            background-color: #16213e;
-            border: 2px solid #0f3460;
-            border-radius: 7px;
-            margin-top: 15px;
-            overflow: hidden;
-        }
+.menu{
+    position:fixed;
+    top:70px;
+    left:0;
+    right:0;
+    background:rgba(10, 10, 15, 0.95);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border-color);
+    padding:15px;
+    transform:translateY(-120%);
+    transition: transform 0.4s cubic-bezier(0.1, 1, 0.1, 1);
+    z-index:999;
+    border-radius: 0 0 25px 25px;
+}
 
-        #charge-bar {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #4ecca3, #ff9f43, #e94560);
-            transition: width 0.05s linear;
-        }
+.menu.open{
+    transform:translateY(0);
+}
 
-        #controls { margin-top: 15px; text-align: center; }
+.menu button{
+    width:100%;
+    background:#14141c;
+    color:var(--text-main);
+    border:1px solid var(--border-color);
+    margin:6px 0;
+    padding:16px;
+    border-radius:15px;
+    text-align:left;
+    font-size:16px;
+    font-weight: 600;
+    cursor:pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-        button {
-            padding: 12px 28px;
-            font-size: 1rem;
-            font-weight: bold;
-            background-color: #e94560;
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+.menu button:hover, .menu button:active{
+    background:#1c1c28;
+    border-color: var(--gold);
+    color: var(--gold);
+}
 
-        #status { margin-top: 10px; font-size: 0.9rem; color: #4ecca3; }
-        #score { position: absolute; top: 10px; right: 15px; font-size: 1.1rem; font-weight: bold; }
-    </style>
+main{
+    padding:95px 16px 40px;
+    max-width:600px;
+    margin:auto;
+}
+
+.page{
+    display:none;
+    animation:show .4s cubic-bezier(0.1, 1, 0.1, 1);
+}
+
+.page.active{
+    display:block;
+}
+
+@keyframes show{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.hero{
+    text-align:center;
+    margin-bottom:24px;
+}
+
+.hero h1{
+    font-size:30px;
+    margin-bottom:6px;
+    font-weight: 800;
+}
+
+.hero p{
+    color:var(--text-muted);
+    font-size: 14px;
+}
+
+/* SNAKE */
+.gameBox{
+    background:var(--card-bg);
+    border:1px solid var(--border-color);
+    border-radius:28px;
+    padding:16px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+canvas{
+    display:block;
+    width:100%;
+    aspect-ratio:1;
+    background: var(--gold);
+    border-radius:20px;
+    border: 1px solid var(--border-color);
+    touch-action: none;
+}
+
+.gameInfo{
+    display:flex;
+    justify-content:space-between;
+    padding:16px 10px;
+    color:var(--text-muted);
+    font-size: 15px;
+}
+
+.gameInfo strong{
+    color:var(--gold);
+}
+
+.start{
+    width:100%;
+    border:0;
+    padding:16px;
+    border-radius:16px;
+    background:var(--gold);
+    color:#000;
+    font-size:16px;
+    font-weight:bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.start:active {
+    transform: scale(0.97);
+}
+
+.controls{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:15px;
+}
+
+.controls button{
+    height:60px;
+    border:1px solid var(--border-color);
+    background:#14141c;
+    color:var(--gold);
+    border-radius:16px;
+    font-size:24px;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.controls button:active {
+    background: #1f1f2e;
+}
+
+.controls .empty{
+    visibility:hidden;
+}
+
+/* CALCULATOR */
+.calc{
+    background:var(--card-bg);
+    border:1px solid var(--border-color);
+    border-radius:28px;
+    padding:20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+.display{
+    min-height:110px;
+    background:#020204;
+    border: 1px solid var(--border-color);
+    border-radius:20px;
+    padding:18px;
+    text-align:right;
+    margin-bottom:16px;
+}
+
+.expression{
+    color:var(--text-muted);
+    min-height:25px;
+    font-size: 16px;
+    word-break: break-all;
+}
+
+.result{
+    font-size:38px;
+    font-weight:bold;
+    margin-top:8px;
+    color: var(--gold);
+    word-break: break-all;
+}
+
+.keys{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.keys button{
+    height:62px;
+    border:1px solid var(--border-color);
+    border-radius:16px;
+    background:#14141c;
+    color:white;
+    font-size:20px;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.keys button:active{
+    transform:scale(.92);
+    background:#20202e;
+}
+
+.keys .operator{
+    background:#1f1f2e!important;
+    color:var(--gold)!important;
+    font-weight: bold;
+}
+
+.keys .equal {
+    background:var(--gold)!important;
+    color:#000!important;
+    font-weight: bold;
+}
+
+.keys .clear{
+    background:#331212!important;
+    color:#ff5555!important;
+}
+
+/* FLASHLIGHT */
+.flashBox{
+    background:var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius:30px;
+    padding:35px 20px;
+    text-align:center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    transition: 0.3s;
+}
+
+/* نمط إضاءة الهاتف بالكامل عند تفعيل الفلاش */
+body.screen-flash-active {
+    background: #ffffff !important;
+}
+body.screen-flash-active header {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-bottom-color: #ddd !important;
+}
+body.screen-flash-active .flashBox {
+    background: #ffffff !important;
+    border-color: #ccc !important;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.2);
+}
+body.screen-flash-active .flashBox h2, 
+body.screen-flash-active #flashStatus,
+body.screen-flash-active .hero h1,
+body.screen-flash-active .hero p {
+    color: #000000 !important;
+}
+
+.flashBox h2 {
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+#flashStatus {
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.flashCircle{
+    width:190px;
+    height:190px;
+    border-radius:50%;
+    background:#14141c;
+    border: 2px solid var(--border-color);
+    margin:30px auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.4s;
+}
+
+.flashIcon{
+    font-size:65px;
+    transition: 0.4s;
+}
+
+.flashCircle.on{
+    background:#ffffff;
+    border-color: #ffcc00;
+    box-shadow: 0 0 50px #ffffff, inset 0 0 25px rgba(255,255,255,0.8);
+}
+
+.flashButtons{
+    display:flex;
+    gap:12px;
+}
+
+.flashButtons button{
+    flex:1;
+    height:56px;
+    border:0;
+    border-radius:18px;
+    font-weight:bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.onBtn{
+    background:var(--gold);
+    color: #000;
+}
+
+.offBtn{
+    background:#14141c;
+    color:white;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* RECORDER */
+.recorder{
+    background:var(--card-bg);
+    border:1px solid var(--border-color);
+    border-radius:28px;
+    padding:16px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+video{
+    width:100%;
+    background:#000;
+    border-radius:20px;
+    display:block;
+    aspect-ratio:16/10;
+    object-fit:cover;
+    border: 1px solid var(--border-color);
+}
+
+.recordControls{
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+}
+
+.recordControls button{
+    flex:1;
+    padding:15px;
+    border:0;
+    border-radius:16px;
+    font-weight:bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cameraBtn{
+    background:#14141c;
+    color:white;
+    border: 1px solid var(--border-color);
+}
+
+.recordBtn{
+    background:#b81c1c;
+    color:white;
+}
+
+.stopBtn{
+    background:#22222d;
+    color:white;
+}
+
+#downloadLink{
+    display:none;
+    margin-top:15px;
+    text-align:center;
+    background:var(--gold);
+    color:#000;
+    padding:15px;
+    border-radius:16px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.status{
+    text-align:center;
+    color:var(--text-muted);
+    margin-top:14px;
+    font-size:13px;
+}
+</style>
 </head>
+
 <body>
 
-    <h1>لعبة شحن القفزة بالصوت 🎤</h1>
+<header>
+    <div class="logo">CODE⚡LAB</div>
+    <button class="menuBtn" onclick="toggleMenu()">☰</button>
+</header>
 
-    <div id="game-container">
-        <div id="score">النقاط: 0</div>
-        <div id="player"></div>
-        <div class="platform" id="plat1" style="left: 10px; width: 70px;"></div>
-        <div class="platform" id="plat2" style="left: 160px; width: 60px;"></div>
+<div class="menu" id="menu">
+    <button onclick="openPage('snake')">🐍 Snake Game</button>
+    <button onclick="openPage('calculator')">🧮 Calculator</button>
+    <button onclick="openPage('flashlight')">🔦 Flashlight</button>
+    <button onclick="openPage('recorder')">🎥 Video Recorder</button>
+</div>
+
+<main>
+
+<!-- ================= SNAKE ================= -->
+<section id="snake" class="page active">
+    <div class="hero">
+        <h1>🐍 SNAKE</h1>
+        <p>Eat the apples. Break the record.</p>
     </div>
-
-    <div id="charge-bar-container">
-        <div id="charge-bar"></div>
+    <div class="gameBox">
+        <canvas id="game" width="400" height="400"></canvas>
+        <div class="gameInfo">
+            <span>SCORE: <strong id="score">0</strong></span>
+            <span>BEST: <strong id="best">0</strong></span>
+        </div>
+        <button class="start" onclick="startGame()">START GAME</button>
+        <div class="controls">
+            <button class="empty">.</button>
+            <button onclick="changeDirection('up')">↑</button>
+            <button class="empty">.</button>
+            <button onclick="changeDirection('left')">←</button>
+            <button onclick="changeDirection('down')">↓</button>
+            <button onclick="changeDirection('right')">→</button>
+        </div>
     </div>
+</section>
 
-    <div id="controls">
-        <button id="start-btn">ابدأ اللعب بالميكروفون</button>
-        <p id="status">اضغط على الزر واسمح للميكروفون</p>
+<!-- ================= CALCULATOR ================= -->
+<section id="calculator" class="page">
+    <div class="hero">
+        <h1>🧮 CALCULATOR</h1>
+        <p>Simple. Fast. Powerful.</p>
     </div>
+    <div class="calc">
+        <div class="display">
+            <div class="expression" id="expression">0</div>
+            <div class="result" id="result">0</div>
+        </div>
+        <div class="keys">
+            <button class="clear" onclick="clearCalc()">C</button>
+            <button class="operator" onclick="addCalc('/')">÷</button>
+            <button class="operator" onclick="addCalc('*')">×</button>
+            <button class="operator" onclick="addCalc('-')">−</button>
 
-    <script>
-        const player = document.getElementById('player');
-        const startBtn = document.getElementById('start-btn');
-        const statusText = document.getElementById('status');
-        const chargeBar = document.getElementById('charge-bar');
-        const scoreText = document.getElementById('score');
-        const plat1 = document.getElementById('plat1');
-        const plat2 = document.getElementById('plat2');
+            <button onclick="addCalc('7')">7</button>
+            <button onclick="addCalc('8')">8</button>
+            <button onclick="addCalc('9')">9</button>
+            <button class="operator" onclick="addCalc('+')">+</button>
 
-        let audioContext;
-        let analyser;
-        let microphone;
+            <button onclick="addCalc('4')">4</button>
+            <button onclick="addCalc('5')">5</button>
+            <button onclick="addCalc('6')">6</button>
+            <button onclick="addCalc('.')">.</button>
 
-        let isCharging = false;
-        let isJumping = false;
-        let chargePower = 0; // القوة المجمعة (0 - 100)
-        let playerLeft = 30;
-        const baseBottom = 60;
-        let score = 0;
+            <button onclick="addCalc('1')">1</button>
+            <button onclick="addCalc('2')">2</button>
+            <button onclick="addCalc('3')">3</button>
+            <button class="equal" onclick="calculate()">=</button>
 
-        let currentPlat = { left: 10, width: 70 };
-        let nextPlat = { left: 160, width: 60 };
+            <button onclick="addCalc('0')" style="grid-column:span 4">0</button>
+        </div>
+    </div>
+</section>
 
-        startBtn.addEventListener('click', async () => {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                analyser = audioContext.createAnalyser();
-                microphone = audioContext.createMediaStreamSource(stream);
-                microphone.connect(analyser);
-                analyser.fftSize = 256;
-                
-                statusText.innerText = "تحدث لتجمع القوة.. واسكت باش تنقز!";
-                startBtn.style.display = 'none';
-                
-                listenToVoice();
-            } catch (err) {
-                statusText.innerText = "خاصك تعطيهم إذن الميكروفون!";
-            }
-        });
+<!-- ================= FLASHLIGHT ================= -->
+<section id="flashlight" class="page">
+    <div class="hero">
+        <h1>🔦 FLASHLIGHT</h1>
+        <p>Light simulation interface.</p>
+    </div>
+    <div class="flashBox" id="flashBoxContainer">
+        <h2>FLASHLIGHT</h2>
+        <div id="flashStatus">OFF</div>
+        <div class="flashCircle" id="flashCircle">
+            <div class="flashIcon">🔦</div>
+        </div>
+        <div class="flashButtons">
+            <button class="onBtn" onclick="flashOn()">ON</button>
+            <button class="offBtn" onclick="flashOff()">OFF</button>
+        </div>
+    </div>
+</section>
 
-        function listenToVoice() {
-            const dataArray = new Uint8Array(analyser.frequencyBinCount);
-            
-            function checkAudio() {
-                analyser.getByteFrequencyData(dataArray);
-                
-                let sum = 0;
-                for (let i = 0; i < dataArray.length; i++) {
-                    sum += dataArray[i];
-                }
-                let averageVolume = sum / dataArray.length;
+<!-- ================= RECORDER ================= -->
+<section id="recorder" class="page">
+    <div class="hero">
+        <h1>🎥 RECORDER</h1>
+        <p>Record directly from your phone.</p>
+    </div>
+    <div class="recorder">
+        <video id="video" autoplay muted playsinline></video>
+        <div class="recordControls">
+            <button class="cameraBtn" onclick="openCamera()">CAMERA</button>
+            <button class="recordBtn" onclick="startRecording()">● REC</button>
+            <button class="stopBtn" onclick="stopRecording()">STOP</button>
+        </div>
+        <div class="status" id="recordStatus">Camera not started</div>
+        <a id="downloadLink">⬇️ SAVE VIDEO</a>
+    </div>
+</section>
 
-                // إذا كان الصوت قوي (أكبر من 20) والشخصية ما كاتنقزش
-                if (averageVolume > 20 && !isJumping) {
-                    isCharging = true;
-                    player.classList.add('charging');
-                    
-                    // زيادة القوة طالما هناك صوت
-                    if (chargePower < 100) {
-                        chargePower += 2.5; 
-                    }
-                    chargeBar.style.width = chargePower + '%';
-                } 
-                // إذا سكت اللاعب وكانت القوة مجمعة -> ينقز فوراً!
-                else if (isCharging && !isJumping) {
-                    isCharging = false;
-                    player.classList.remove('charging');
-                    executeJump(chargePower);
-                    chargePower = 0;
-                    chargeBar.style.width = '0%';
-                }
-                
-                requestAnimationFrame(checkAudio);
-            }
-            
-            checkAudio();
+</main>
+
+<script>
+// --- MENU ---
+function toggleMenu(){
+    document.getElementById("menu").classList.toggle("open");
+}
+
+function openPage(id){
+    document.querySelectorAll(".page").forEach(page=>{
+        page.classList.remove("active");
+    });
+    document.getElementById(id).classList.add("active");
+    document.getElementById("menu").classList.remove("open");
+}
+
+// --- SNAKE GAME ---
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+const grid = 25;
+
+let snake = [{x:200,y:200}, {x:175,y:200}, {x:150,y:200}];
+let apple = {x:100, y:100};
+let dx = grid, dy = 0;
+let score = 0, gameRunning = false, gameTimer;
+let best = Number(localStorage.getItem("snakeBest") || 0);
+document.getElementById("best").innerText = best;
+
+function randomApple(){
+    apple.x = Math.floor(Math.random() * (canvas.width / grid)) * grid;
+    apple.y = Math.floor(Math.random() * (canvas.height / grid)) * grid;
+}
+
+function startGame(){
+    snake = [{x:200,y:200}, {x:175,y:200}, {x:150,y:200}];
+    dx = grid; dy = 0; score = 0;
+    document.getElementById("score").innerText = 0;
+    randomApple();
+    gameRunning = true;
+    clearInterval(gameTimer);
+    gameTimer = setInterval(gameLoop, 120);
+}
+
+function gameLoop(){
+    if(!gameRunning) return;
+    const head = {x:snake[0].x + dx, y:snake[0].y + dy};
+
+    if(head.x >= canvas.width) head.x = 0;
+    if(head.x < 0) head.x = canvas.width - grid;
+    if(head.y >= canvas.height) head.y = 0;
+    if(head.y < 0) head.y = canvas.height - grid;
+
+    for(let i=1; i<snake.length; i++){
+        if(head.x === snake[i].x && head.y === snake[i].y){
+            gameOver();
+            return;
         }
+    }
 
-        function executeJump(power) {
-            isJumping = true;
-            
-            // حساب المسافة على حسب شحال الوقت اللي غوت فيه
-            let jumpDistance = (power / 100) * 220; // أقصى مسافة 220px
-            let jumpHeight = Math.min((power / 100) * 150 + 40, 160);
+    snake.unshift(head);
 
-            // صعود القفزة
-            player.style.bottom = (baseBottom + jumpHeight) + 'px';
-            player.style.left = (playerLeft + (jumpDistance / 2)) + 'px';
-
-            // نزول القفزة
-            setTimeout(() => {
-                playerLeft += jumpDistance;
-                player.style.bottom = baseBottom + 'px';
-                player.style.left = playerLeft + 'px';
-
-                setTimeout(() => {
-                    checkLanding();
-                }, 200);
-            }, 200);
+    if(head.x === apple.x && head.y === apple.y){
+        score++;
+        document.getElementById("score").innerText = score;
+        if(score > best){
+            best = score;
+            localStorage.setItem("snakeBest", best);
+            document.getElementById("best").innerText = best;
         }
+        randomApple();
+    } else {
+        snake.pop();
+    }
+    drawGame();
+}
 
-        function checkLanding() {
-            const playerCenter = playerLeft + 12;
+function drawGame(){
+    ctx.fillStyle = "#f0c400";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            if (playerCenter >= nextPlat.left && playerCenter <= (nextPlat.left + nextPlat.width)) {
-                score++;
-                scoreText.innerText = "النقاط: " + score;
-                statusText.innerText = "قفزة في المحل! واصل!";
-                shiftPlatforms();
-            } else {
-                player.style.bottom = '0px';
-                statusText.innerText = "طحتي فالفراغ! حاول تظبط الوقت ديال الصوت.";
-                setTimeout(() => {
-                    resetGame();
-                }, 1500);
-            }
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 0.5;
+    for(let x=0; x<canvas.width; x+=grid){
+        ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,canvas.height); ctx.stroke();
+    }
+    for(let y=0; y<canvas.height; y+=grid){
+        ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke();
+    }
 
-            isJumping = false;
+    ctx.font = "22px Arial";
+    ctx.fillText("🍎", apple.x + 2, apple.y + 20);
+
+    snake.forEach((part, index)=>{
+        ctx.fillStyle = index === 0 ? "#111111" : "#333333";
+        ctx.fillRect(part.x + 2, part.y + 2, grid - 4, grid - 4);
+    });
+}
+
+function gameOver(){
+    gameRunning = false;
+    clearInterval(gameTimer);
+    alert("GAME OVER!\nScore: " + score);
+}
+
+function changeDirection(direction){
+    if(direction === "up" && dy === 0){ dx = 0; dy = -grid; }
+    if(direction === "down" && dy === 0){ dx = 0; dy = grid; }
+    if(direction === "left" && dx === 0){ dx = -grid; dy = 0; }
+    if(direction === "right" && dx === 0){ dx = grid; dy = 0; }
+}
+
+let touchStartX = 0;
+let touchStartY = 0;
+
+canvas.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    e.preventDefault();
+}, {passive: false});
+
+canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+}, {passive: false});
+
+canvas.addEventListener('touchend', e => {
+    if (!touchStartX || !touchStartY) return;
+
+    let touchEndX = e.changedTouches[0].clientX;
+    let touchEndY = e.changedTouches[0].clientY;
+
+    let diffX = touchEndX - touchStartX;
+    let diffY = touchEndY - touchStartY;
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX > 30) {
+            changeDirection('right');
+        } else if (diffX < -30) {
+            changeDirection('left');
         }
-
-        function shiftPlatforms() {
-            currentPlat = { ...nextPlat };
-            let newLeft = currentPlat.left + currentPlat.width + Math.floor(Math.random() * 70 + 30);
-            let newWidth = Math.floor(Math.random() * 30 + 50);
-
-            let offset = currentPlat.left - 10;
-            playerLeft -= offset;
-            currentPlat.left = 10;
-            newLeft -= offset;
-
-            plat1.style.left = currentPlat.left + 'px';
-            plat1.style.width = currentPlat.width + 'px';
-
-            plat2.style.left = newLeft + 'px';
-            plat2.style.width = newWidth + 'px';
-
-            nextPlat = { left: newLeft, width: newWidth };
-
-            player.style.transition = 'none';
-            player.style.left = playerLeft + 'px';
-            setTimeout(() => {
-                player.style.transition = 'bottom 0.2s cubic-bezier(0.25, 1, 0.5, 1), left 0.2s linear';
-            }, 50);
+    } else {
+        if (diffY > 30) {
+            changeDirection('down');
+        } else if (diffY < -30) {
+            changeDirection('up');
         }
+    }
 
-        function resetGame() {
-            score = 0;
-            scoreText.innerText = "النقاط: 0";
-            playerLeft = 30;
-            
-            currentPlat = { left: 10, width: 70 };
-            nextPlat = { left: 160, width: 60 };
+    touchStartX = 0;
+    touchStartY = 0;
+    e.preventDefault();
+}, {passive: false});
 
-            plat1.style.left = '10px';
-            plat1.style.width = '70px';
-            plat2.style.left = '160px';
-            plat2.style.width = '60px';
+document.addEventListener("keydown", e=>{
+    if(e.key === "ArrowUp") changeDirection("up");
+    if(e.key === "ArrowDown") changeDirection("down");
+    if(e.key === "ArrowLeft") changeDirection("left");
+    if(e.key === "ArrowRight") changeDirection("right");
+});
 
-            player.style.bottom = baseBottom + 'px';
-            player.style.left = playerLeft + 'px';
-            statusText.innerText = "تكلم باش تبدأ تشحن القفزة!";
-            isJumping = false;
+drawGame();
+
+// --- CALCULATOR ---
+let calc = "";
+function addCalc(value){
+    calc += value;
+    document.getElementById("expression").innerText = calc;
+}
+
+function clearCalc(){
+    calc = "";
+    document.getElementById("expression").innerText = "0";
+    document.getElementById("result").innerText = "0";
+}
+
+function calculate(){
+    if(!calc) return;
+    try{
+        let sanitized = calc.replace(/×/g, '*').replace(/÷/g, '/');
+        const answer = Function('"use strict";return (' + sanitized + ')')();
+        
+        if(isNaN(answer) || !isFinite(answer)){
+            document.getElementById("result").innerText = "ERROR";
+        } else {
+            document.getElementById("result").innerText = Number(answer.toFixed(6));
         }
-    </script>
+    } catch{
+        document.getElementById("result").innerText = "ERROR";
+    }
+}
+
+// --- FLASHLIGHT (تفعيل إضاءة الهاتف بالكامل) ---
+function flashOn(){
+    document.getElementById("flashCircle").classList.add("on");
+    document.getElementById("flashStatus").innerText = "ON 💡";
+    document.body.classList.add("screen-flash-active");
+}
+
+function flashOff(){
+    document.getElementById("flashCircle").classList.remove("on");
+    document.getElementById("flashStatus").innerText = "OFF";
+    document.body.classList.remove("screen-flash-active");
+}
+
+// --- VIDEO RECORDER ---
+let stream = null, recorder = null, chunks = [];
+
+async function openCamera(){
+    try{
+        stream = await navigator.mediaDevices.getUserMedia({video:true, audio:true});
+        document.getElementById("video").srcObject = stream;
+        document.getElementById("recordStatus").innerText = "Camera ready";
+    } catch{
+        document.getElementById("recordStatus").innerText = "Camera permission denied";
+    }
+}
+
+function startRecording(){
+    if(!stream){ alert("Open CAMERA first."); return; }
+    chunks = [];
+    recorder = new MediaRecorder(stream);
+    recorder.ondataavailable = e=>{ if(e.data.size > 0) chunks.push(e.data); };
+    recorder.onstop = ()=>{
+        const blob = new Blob(chunks, {type:"video/webm"});
+        const url = URL.createObjectURL(blob);
+        const link = document.getElementById("downloadLink");
+        link.href = url;
+        link.download = "my-recording.webm";
+        link.style.display = "block";
+        document.getElementById("recordStatus").innerText = "Recording finished";
+    };
+    recorder.start();
+    document.getElementById("recordStatus").innerText = "🔴 Recording...";
+}
+
+function stopRecording(){
+    if(recorder && recorder.state === "recording"){
+        recorder.stop();
+    }
+}
+</script>
+
 </body>
 </html>
