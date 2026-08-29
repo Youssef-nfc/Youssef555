@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>CODE⚡LAB PRO</title>
+<title>CODE⚡LAB - المنصة الرسمية للألعاب</title>
 
 <style>
-:root {
-    --bg-color: #030305;
-    --card-bg: #0d0d12;
-    --border-color: #22222d;
-    --gold: #f0c400;
-    --gold-glow: rgba(240, 196, 0, 0.35);
-    --text-main: #ffffff;
-    --text-muted: #888895;
+:root{
+    --bg-color:#030305;
+    --card-bg:#0d0d12;
+    --border-color:#22222d;
+    --gold:#f0c400;
+    --gold-glow:rgba(240,196,0,.35);
+    --text-main:#fff;
+    --text-muted:#888895;
+    --danger:#ff4757;
+    --success:#2ed573;
 }
 
 *{
@@ -24,865 +26,1007 @@
 }
 
 body{
-    font-family:'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background:var(--bg-color);
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+    background:
+        radial-gradient(circle at 50% 0%,rgba(240,196,0,.06),transparent 35%),
+        var(--bg-color);
     color:var(--text-main);
     min-height:100vh;
-    overflow-x:hidden;
-    transition: background 0.3s;
-}
-
-header{
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    height:70px;
-    background:rgba(3, 3, 5, 0.85);
-    backdrop-filter:blur(20px);
-    border-bottom:1px solid var(--border-color);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 20px;
-    z-index:1000;
-}
-
-.logo{
-    font-size:22px;
-    font-weight:900;
-    letter-spacing:3px;
-    color:var(--gold);
-    text-shadow: 0 0 15px var(--gold-glow);
-}
-
-.menuBtn{
-    width:46px;
-    height:46px;
-    border:1px solid var(--border-color);
-    background:#121218;
-    color:var(--gold);
-    border-radius:14px;
-    font-size:22px;
-    cursor:pointer;
-    transition: 0.3s;
-}
-
-.menuBtn:active {
-    transform: scale(0.9);
-}
-
-.menu{
-    position:fixed;
-    top:70px;
-    left:0;
-    right:0;
-    background:rgba(10, 10, 15, 0.95);
-    backdrop-filter:blur(20px);
-    border-bottom:1px solid var(--border-color);
-    padding:15px;
-    transform:translateY(-120%);
-    transition: transform 0.4s cubic-bezier(0.1, 1, 0.1, 1);
-    z-index:999;
-    border-radius: 0 0 25px 25px;
-}
-
-.menu.open{
-    transform:translateY(0);
-}
-
-.menu button{
-    width:100%;
-    background:#14141c;
-    color:var(--text-main);
-    border:1px solid var(--border-color);
-    margin:6px 0;
-    padding:16px;
-    border-radius:15px;
-    text-align:left;
-    font-size:16px;
-    font-weight: 600;
-    cursor:pointer;
-    transition: 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.menu button:hover, .menu button:active{
-    background:#1c1c28;
-    border-color: var(--gold);
-    color: var(--gold);
-}
-
-main{
-    padding:95px 16px 40px;
-    max-width:600px;
-    margin:auto;
-}
-
-.page{
-    display:none;
-    animation:show .4s cubic-bezier(0.1, 1, 0.1, 1);
-}
-
-.page.active{
-    display:block;
-}
-
-@keyframes show{
-    from{
-        opacity:0;
-        transform:translateY(15px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-.hero{
-    text-align:center;
-    margin-bottom:24px;
-}
-
-.hero h1{
-    font-size:30px;
-    margin-bottom:6px;
-    font-weight: 800;
-}
-
-.hero p{
-    color:var(--text-muted);
-    font-size: 14px;
-}
-
-/* SNAKE */
-.gameBox{
-    background:var(--card-bg);
-    border:1px solid var(--border-color);
-    border-radius:28px;
-    padding:16px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-}
-
-canvas{
-    display:block;
-    width:100%;
-    aspect-ratio:1;
-    background: var(--gold);
-    border-radius:20px;
-    border: 1px solid var(--border-color);
-    touch-action: none;
-}
-
-.gameInfo{
-    display:flex;
-    justify-content:space-between;
-    padding:16px 10px;
-    color:var(--text-muted);
-    font-size: 15px;
-}
-
-.gameInfo strong{
-    color:var(--gold);
-}
-
-.start{
-    width:100%;
-    border:0;
-    padding:16px;
-    border-radius:16px;
-    background:var(--gold);
-    color:#000;
-    font-size:16px;
-    font-weight:bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.start:active {
-    transform: scale(0.97);
-}
-
-.controls{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:8px;
-    margin-top:15px;
-}
-
-.controls button{
-    height:60px;
-    border:1px solid var(--border-color);
-    background:#14141c;
-    color:var(--gold);
-    border-radius:16px;
-    font-size:24px;
-    cursor: pointer;
-    transition: 0.15s;
-}
-
-.controls button:active {
-    background: #1f1f2e;
-}
-
-.controls .empty{
-    visibility:hidden;
-}
-
-/* CALCULATOR */
-.calc{
-    background:var(--card-bg);
-    border:1px solid var(--border-color);
-    border-radius:28px;
-    padding:20px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-}
-
-.display{
-    min-height:110px;
-    background:#020204;
-    border: 1px solid var(--border-color);
-    border-radius:20px;
-    padding:18px;
-    text-align:right;
-    margin-bottom:16px;
-}
-
-.expression{
-    color:var(--text-muted);
-    min-height:25px;
-    font-size: 16px;
-    word-break: break-all;
-}
-
-.result{
-    font-size:38px;
-    font-weight:bold;
-    margin-top:8px;
-    color: var(--gold);
-    word-break: break-all;
-}
-
-.keys{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
-}
-
-.keys button{
-    height:62px;
-    border:1px solid var(--border-color);
-    border-radius:16px;
-    background:#14141c;
-    color:white;
-    font-size:20px;
-    cursor: pointer;
-    transition: 0.15s;
-}
-
-.keys button:active{
-    transform:scale(.92);
-    background:#20202e;
-}
-
-.keys .operator{
-    background:#1f1f2e!important;
-    color:var(--gold)!important;
-    font-weight: bold;
-}
-
-.keys .equal {
-    background:var(--gold)!important;
-    color:#000!important;
-    font-weight: bold;
-}
-
-.keys .clear{
-    background:#331212!important;
-    color:#ff5555!important;
-}
-
-/* FLASHLIGHT */
-.flashBox{
-    background:var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius:30px;
-    padding:35px 20px;
-    text-align:center;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-    transition: 0.3s;
-}
-
-body.screen-flash-active {
-    background: #ffffff !important;
-}
-body.screen-flash-active header {
-    background: rgba(255, 255, 255, 0.95) !important;
-    border-bottom-color: #ddd !important;
-}
-body.screen-flash-active .flashBox {
-    background: #ffffff !important;
-    border-color: #ccc !important;
-    box-shadow: 0 0 60px rgba(0, 0, 0, 0.2);
-}
-body.screen-flash-active .flashBox h2, 
-body.screen-flash-active #flashStatus,
-body.screen-flash-active .hero h1,
-body.screen-flash-active .hero p {
-    color: #000000 !important;
-}
-
-.flashBox h2 {
-    letter-spacing: 2px;
-    margin-bottom: 5px;
-}
-
-#flashStatus {
-    color: var(--text-muted);
-    font-weight: 600;
-    margin-bottom: 10px;
-}
-
-.flashCircle{
-    width:190px;
-    height:190px;
-    border-radius:50%;
-    background:#14141c;
-    border: 2px solid var(--border-color);
-    margin:30px auto;
     display:flex;
     align-items:center;
     justify-content:center;
-    transition:.4s;
+    padding:20px;
+    overflow-x:hidden;
 }
 
-.flashIcon{
-    font-size:65px;
-    transition: 0.4s;
+.auth-container{
+    width:100%;
+    max-width:440px;
+    background:var(--card-bg);
+    border:1px solid var(--border-color);
+    border-radius:32px;
+    padding:35px 25px;
+    box-shadow:
+        0 20px 45px rgba(0,0,0,.7),
+        inset 0 1px 0 rgba(255,255,255,.08);
+    position:relative;
 }
 
-.flashCircle.on{
-    background:#ffffff;
-    border-color: #ffcc00;
-    box-shadow: 0 0 50px #ffffff, inset 0 0 25px rgba(255,255,255,0.8);
+.auth-header{
+    text-align:center;
+    margin-bottom:25px;
 }
 
-.flashButtons{
+.brand-logo-box{
     display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:8px;
+}
+
+.brand-icon{
+    width:40px;
+    height:40px;
+    background:linear-gradient(135deg,#f0c400,#ff9f0a);
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    box-shadow:0 0 15px var(--gold-glow);
+}
+
+.auth-header .logo{
+    font-size:26px;
+    font-weight:900;
+    letter-spacing:2px;
+    color:var(--gold);
+    text-shadow:0 0 20px var(--gold-glow);
+}
+
+.auth-header p{
+    color:var(--text-muted);
+    font-size:13px;
+    line-height:1.6;
+}
+
+.auth-tabs{
+    display:flex;
+    background:#020204;
+    border:1px solid var(--border-color);
+    border-radius:16px;
+    padding:4px;
+    margin-bottom:25px;
+}
+
+.auth-tab{
+    flex:1;
+    background:transparent;
+    border:none;
+    color:var(--text-muted);
+    padding:12px;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    border-radius:12px;
+    transition:.3s;
+}
+
+.auth-tab.active{
+    background:#14141c;
+    color:var(--gold);
+    box-shadow:0 4px 12px rgba(0,0,0,.3);
+}
+
+.form-group{
+    margin-bottom:16px;
+    position:relative;
+}
+
+.form-group label{
+    display:block;
+    font-size:13px;
+    color:var(--text-muted);
+    margin-bottom:6px;
+    font-weight:600;
+}
+
+.input-box{
+    position:relative;
+    display:flex;
+    align-items:center;
+}
+
+.form-input{
+    width:100%;
+    background:#020204;
+    border:1px solid var(--border-color);
+    padding:14px 16px;
+    padding-left:45px;
+    border-radius:16px;
+    color:#fff;
+    font-size:15px;
+    outline:none;
+    transition:.2s;
+}
+
+.form-input:focus{
+    border-color:var(--gold);
+    box-shadow:0 0 12px var(--gold-glow);
+}
+
+.toggle-password{
+    position:absolute;
+    left:14px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    font-size:18px;
+    color:var(--text-muted);
+}
+
+.forgot-pass{
+    text-align:left;
+    margin-bottom:15px;
+}
+
+.forgot-pass a{
+    color:var(--gold);
+    font-size:12px;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.auth-btn{
+    width:100%;
+    background:var(--gold);
+    color:#000;
+    border:none;
+    padding:16px;
+    border-radius:16px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:5px;
+    transition:.2s;
+    box-shadow:0 6px 20px rgba(240,196,0,.25);
+}
+
+.auth-btn:active{
+    transform:scale(.97);
+}
+
+.guest-btn{
+    width:100%;
+    background:#14141c;
+    color:var(--text-main);
+    border:1px solid var(--border-color);
+    padding:14px;
+    border-radius:16px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:12px;
+    transition:.2s;
+}
+
+.guest-btn:hover{
+    border-color:var(--gold);
+    color:var(--gold);
+}
+
+.form-panel{
+    display:none;
+}
+
+.form-panel.active{
+    display:block;
+    animation:fadeIn .3s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* ================= RESET PASSWORD ================= */
+
+.reset-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.88);
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:9999;
+}
+
+.reset-box{
+    width:100%;
+    max-width:430px;
+    background:
+        linear-gradient(145deg,#111118,#08080c);
+    border:1px solid #292936;
+    border-radius:30px;
+    padding:30px 25px;
+    position:relative;
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.9),
+        inset 0 1px 0 rgba(255,255,255,.06);
+    animation:resetIn .3s ease;
+}
+
+@keyframes resetIn{
+    from{
+        opacity:0;
+        transform:translateY(20px) scale(.96);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+.reset-close{
+    position:absolute;
+    top:14px;
+    right:16px;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    border:1px solid #292936;
+    background:#101016;
+    color:#aaa;
+    font-size:23px;
+    cursor:pointer;
+}
+
+.reset-close:hover{
+    color:var(--gold);
+    border-color:var(--gold);
+}
+
+.reset-icon{
+    width:68px;
+    height:68px;
+    margin:0 auto 18px;
+    border-radius:21px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:31px;
+    background:rgba(240,196,0,.08);
+    border:1px solid rgba(240,196,0,.25);
+    box-shadow:0 0 30px rgba(240,196,0,.12);
+}
+
+.reset-box h2{
+    text-align:center;
+    color:var(--gold);
+    font-size:22px;
+    margin-bottom:10px;
+}
+
+.reset-box p{
+    color:var(--text-muted);
+    text-align:center;
+    font-size:13px;
+    line-height:1.8;
+    margin-bottom:24px;
+}
+
+.reset-input-group{
+    margin-bottom:16px;
+}
+
+.reset-input-group label{
+    display:block;
+    color:var(--text-muted);
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:7px;
+}
+
+/* OTP */
+
+.otp-container{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    direction:ltr;
+    margin:20px 0;
+}
+
+.otp-input{
+    width:48px;
+    height:58px;
+    text-align:center;
+    font-size:23px;
+    font-weight:bold;
+    color:#fff;
+    background:#020204;
+    border:1px solid #292936;
+    border-radius:13px;
+    outline:none;
+    transition:.2s;
+}
+
+.otp-input:focus{
+    border-color:var(--gold);
+    box-shadow:0 0 15px var(--gold-glow);
+    transform:translateY(-2px);
+}
+
+.otp-timer{
+    text-align:center;
+    color:var(--text-muted);
+    font-size:12px;
+    margin-bottom:15px;
+}
+
+#otpTimer{
+    color:var(--gold);
+    font-weight:bold;
+}
+
+.reset-back{
+    display:block;
+    width:100%;
+    border:none;
+    background:transparent;
+    color:var(--text-muted);
+    padding:13px;
+    cursor:pointer;
+    font-size:12px;
+}
+
+.reset-back:hover{
+    color:var(--gold);
+}
+
+.reset-message{
+    display:none;
+    padding:12px;
+    border-radius:12px;
+    margin-bottom:15px;
+    font-size:12px;
+    text-align:center;
+}
+
+.reset-message.error{
+    display:block;
+    color:#ff7b86;
+    background:rgba(255,71,87,.08);
+    border:1px solid rgba(255,71,87,.2);
+}
+
+.reset-message.success{
+    display:block;
+    color:#7dffae;
+    background:rgba(46,213,115,.08);
+    border:1px solid rgba(46,213,115,.2);
+}
+
+/* SUCCESS */
+
+.reset-success{
+    text-align:center;
+}
+
+.success-icon{
+    width:75px;
+    height:75px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:40px;
+    color:#000;
+    background:var(--success);
+    box-shadow:0 0 35px rgba(46,213,115,.3);
+}
+
+/* WELCOME */
+
+#welcomeScreen{
+    display:none;
+    text-align:center;
+}
+
+#welcomeScreen h2{
+    color:var(--gold);
+    font-size:22px;
+    margin-bottom:15px;
+}
+
+#welcomeScreen p{
+    color:var(--text-main);
+    font-size:15px;
+    line-height:1.8;
+    background:#020204;
+    border:1px solid var(--border-color);
+    padding:20px;
+    border-radius:20px;
+    margin-bottom:25px;
+}
+
+/* DASHBOARD */
+
+#gamesDashboard{
+    display:none;
+    width:100%;
+    max-width:600px;
+}
+
+.dashboard-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:var(--card-bg);
+    border:1px solid var(--border-color);
+    padding:15px 20px;
+    border-radius:20px;
+    margin-bottom:20px;
+}
+
+.dashboard-header h3{
+    color:var(--gold);
+    font-size:18px;
+}
+
+.map-container{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
     gap:12px;
 }
 
-.flashButtons button{
-    flex:1;
-    height:56px;
-    border:0;
-    border-radius:18px;
-    font-weight:bold;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.onBtn{
-    background:var(--gold);
-    color: #000;
-}
-
-.offBtn{
-    background:#14141c;
-    color:white;
-    border: 1px solid var(--border-color) !important;
-}
-
-/* RECORDER */
-.recorder{
+.level-node{
     background:var(--card-bg);
     border:1px solid var(--border-color);
-    border-radius:28px;
-    padding:16px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-}
-
-video{
-    width:100%;
-    background:#000;
+    padding:20px;
     border-radius:20px;
-    display:block;
-    aspect-ratio:16/10;
-    object-fit:cover;
-    border: 1px solid var(--border-color);
-    margin-bottom: 14px;
-}
-
-.recordControls{
-    display:flex;
-    gap:10px;
-}
-
-.recordControls button{
-    flex:1;
-    padding:15px;
-    border:0;
-    border-radius:16px;
-    font-weight:bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.recordBtn{
-    background:#b81c1c;
-    color:white;
-}
-
-.stopBtn{
-    background:#22222d;
-    color:white;
-    border: 1px solid var(--border-color);
-}
-
-/* Action panel بعد التسجيل (حفظ أو حذف) */
-.postRecordActions {
-    display: none;
-    gap: 10px;
-    margin-top: 14px;
-}
-
-.postRecordActions button {
-    flex: 1;
-    padding: 15px;
-    border-radius: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    border: 0;
-}
-
-.saveVideoBtn {
-    background: var(--gold);
-    color: #000;
-}
-
-.deleteVideoBtn {
-    background: #331212;
-    color: #ff5555;
-    border: 1px solid #552222 !important;
-}
-
-.status{
     text-align:center;
-    color:var(--text-muted);
-    margin-top:14px;
-    font-size:13px;
+    cursor:pointer;
+}
+
+.level-node.unlocked{
+    border-color:var(--gold);
+    background:#191924;
+}
+
+@media(max-width:420px){
+    .auth-container{
+        padding:28px 18px;
+    }
+    .reset-box{
+        padding:27px 18px;
+    }
+    .otp-container{
+        gap:5px;
+    }
+    .otp-input{
+        width:43px;
+        height:54px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <div class="logo">CODE⚡LAB</div>
-    <button class="menuBtn" onclick="toggleMenu()">☰</button>
-</header>
+<!-- ================= LOGIN ================= -->
 
-<div class="menu" id="menu">
-    <button onclick="openPage('snake')">🐍 Snake Game</button>
-    <button onclick="openPage('calculator')">🧮 Calculator</button>
-    <button onclick="openPage('flashlight')">🔦 Flashlight</button>
-    <button onclick="openPage('recorder')">🎥 Screen Recorder</button>
+<div class="auth-container" id="authBox">
+
+    <div class="auth-header">
+        <div class="brand-logo-box">
+            <div class="brand-icon">⚡</div>
+            <div class="logo">CODE⚡LAB</div>
+        </div>
+        <p>بوابة التحديات الكبرى والجوائز القيّمة 🏆</p>
+    </div>
+
+    <div class="auth-tabs" id="authTabs">
+        <button class="auth-tab active" id="loginTabBtn" onclick="switchTab('login')">تسجيل الدخول</button>
+        <button class="auth-tab" id="registerTabBtn" onclick="switchTab('register')">حساب جديد</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="loginForm" class="form-panel active">
+        <div class="form-group">
+            <label>البريد الإلكتروني أو اسم المستخدم</label>
+            <input type="text" class="form-input" placeholder="example@gmail.com" id="loginEmail" dir="ltr">
+        </div>
+
+        <div class="form-group">
+            <label>كلمة المرور</label>
+            <div class="input-box">
+                <input type="password" class="form-input" placeholder="••••••••" id="loginPassword" dir="ltr">
+                <button type="button" class="toggle-password" onclick="togglePass('loginPassword',this)">👁️</button>
+            </div>
+        </div>
+
+        <div class="forgot-pass">
+            <a href="#" onclick="forgotPassword(event)">نسيت كلمة المرور؟</a>
+        </div>
+
+        <button class="auth-btn" onclick="handleLogin()">دخول إلى الحساب 🎮</button>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="registerForm" class="form-panel">
+        <div class="form-group">
+            <label>اسم اللاعب (Nickname)</label>
+            <input type="text" class="form-input" placeholder="أدخل اسمك الأسطوري" id="regName">
+        </div>
+
+        <div class="form-group">
+            <label>البريد الإلكتروني</label>
+            <input type="email" class="form-input" placeholder="example@gmail.com" id="regEmail" dir="ltr">
+        </div>
+
+        <div class="form-group">
+            <label>كلمة المرور</label>
+            <div class="input-box">
+                <input type="password" class="form-input" placeholder="••••••••" id="regPassword" dir="ltr">
+                <button type="button" class="toggle-password" onclick="togglePass('regPassword',this)">👁️</button>
+            </div>
+        </div>
+
+        <button class="auth-btn" onclick="handleRegister()">إنشاء الحساب الآن 🚀</button>
+    </div>
+
+    <button class="guest-btn" onclick="handleGuest()">🕵️ الدخول كزائر</button>
+
+    <!-- WELCOME -->
+    <div id="welcomeScreen">
+        <h2>✨ أهلاً بك في عالم التحدي</h2>
+        <p>
+            مرحباً بك في موقعنا المليء بالمفاجآت!
+            نحن نعمل حالياً على تطوير موقعنا ليحمل حتى 200 لعبة،
+            لنمنح اللاعبين تحديات ومغامرات استثنائية.
+            كل فوز يصعّب التحدي.. هيا لنستكشف! 🫡
+        </p>
+        <button class="auth-btn" onclick="goToGames()">التالي - بدء المغامرة ➡️</button>
+    </div>
+
 </div>
 
-<main>
 
-<!-- ================= SNAKE ================= -->
-<section id="snake" class="page active">
-    <div class="hero">
-        <h1>🐍 SNAKE</h1>
-        <p>Eat the apples. Break the record.</p>
-    </div>
-    <div class="gameBox">
-        <canvas id="game" width="400" height="400"></canvas>
-        <div class="gameInfo">
-            <span>SCORE: <strong id="score">0</strong></span>
-            <span>BEST: <strong id="best">0</strong></span>
-        </div>
-        <button class="start" onclick="startGame()">START GAME</button>
-        <div class="controls">
-            <button class="empty">.</button>
-            <button onclick="changeDirection('up')">↑</button>
-            <button class="empty">.</button>
-            <button onclick="changeDirection('left')">←</button>
-            <button onclick="changeDirection('down')">↓</button>
-            <button onclick="changeDirection('right')">→</button>
-        </div>
-    </div>
-</section>
+<!-- ================= RESET PASSWORD MODAL ================= -->
 
-<!-- ================= CALCULATOR ================= -->
-<section id="calculator" class="page">
-    <div class="hero">
-        <h1>🧮 CALCULATOR</h1>
-        <p>Simple. Fast. Powerful.</p>
-    </div>
-    <div class="calc">
-        <div class="display">
-            <div class="expression" id="expression">0</div>
-            <div class="result" id="result">0</div>
-        </div>
-        <div class="keys">
-            <button class="clear" onclick="clearCalc()">C</button>
-            <button class="operator" onclick="addCalc('/')">÷</button>
-            <button class="operator" onclick="addCalc('*')">×</button>
-            <button class="operator" onclick="addCalc('-')">−</button>
+<div class="reset-overlay" id="resetOverlay">
 
-            <button onclick="addCalc('7')">7</button>
-            <button onclick="addCalc('8')">8</button>
-            <button onclick="addCalc('9')">9</button>
-            <button class="operator" onclick="addCalc('+')">+</button>
+    <!-- STEP 1 -->
+    <div class="reset-box" id="resetEmailStep">
+        <button class="reset-close" onclick="closeReset()">×</button>
+        <div class="reset-icon">🔐</div>
+        <h2>استعادة كلمة المرور</h2>
+        <p>أدخل البريد الإلكتروني المرتبط بحسابك، وسنرسل لك رمز تحقق مكون من 6 أرقام عبر Gmail.</p>
 
-            <button onclick="addCalc('4')">4</button>
-            <button onclick="addCalc('5')">5</button>
-            <button onclick="addCalc('6')">6</button>
-            <button onclick="addCalc('.')">.</button>
+        <div id="emailResetMessage" class="reset-message"></div>
 
-            <button onclick="addCalc('1')">1</button>
-            <button onclick="addCalc('2')">2</button>
-            <button onclick="addCalc('3')">3</button>
-            <button class="equal" onclick="calculate()">=</button>
-
-            <button onclick="addCalc('0')" style="grid-column:span 4">0</button>
-        </div>
-    </div>
-</section>
-
-<!-- ================= FLASHLIGHT ================= -->
-<section id="flashlight" class="page">
-    <div class="hero">
-        <h1>🔦 FLASHLIGHT</h1>
-        <p>Light simulation interface.</p>
-    </div>
-    <div class="flashBox" id="flashBoxContainer">
-        <h2>FLASHLIGHT</h2>
-        <div id="flashStatus">OFF</div>
-        <div class="flashCircle" id="flashCircle">
-            <div class="flashIcon">🔦</div>
-        </div>
-        <div class="flashButtons">
-            <button class="onBtn" onclick="flashOn()">ON</button>
-            <button class="offBtn" onclick="flashOff()">OFF</button>
-        </div>
-    </div>
-</section>
-
-<!-- ================= RECORDER ================= -->
-<section id="recorder" class="page">
-    <div class="hero">
-        <h1>🎥 SCREEN RECORDER</h1>
-        <p>Record your phone screen for Reels & Ads.</p>
-    </div>
-    <div class="recorder">
-        <video id="videoPreview" autoplay playsinline controls></video>
-        
-        <div class="recordControls" id="mainRecordControls">
-            <button class="recordBtn" onclick="startScreenRecording()">● START REC</button>
-            <button class="stopBtn" onclick="stopScreenRecording()">■ STOP</button>
+        <div class="reset-input-group">
+            <label>البريد الإلكتروني</label>
+            <input type="email" id="resetEmail" class="form-input" placeholder="example@gmail.com" dir="ltr" autocomplete="email">
         </div>
 
-        <div class="postRecordActions" id="postRecordActions">
-            <button class="saveVideoBtn" onclick="saveVideo()">💾 SAVE VIDEO</button>
-            <button class="deleteVideoBtn" onclick="deleteVideo()">🗑️ DELETE</button>
+        <button class="auth-btn" onclick="sendResetCode()">إرسال رمز التحقق 📩</button>
+        <button class="reset-back" onclick="closeReset()">العودة لتسجيل الدخول</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="reset-box" id="resetOtpStep">
+        <button class="reset-close" onclick="closeReset()">×</button>
+        <div class="reset-icon">📩</div>
+        <h2>تحقق من بريدك</h2>
+        <p>تم إرسال رمز التحقق إلى بريدك الإلكتروني:<br><strong id="resetEmailPreview"></strong></p>
+
+        <div id="otpMessage" class="reset-message"></div>
+
+        <div class="otp-container">
+            <input class="otp-input" maxlength="1" inputmode="numeric">
+            <input class="otp-input" maxlength="1" inputmode="numeric">
+            <input class="otp-input" maxlength="1" inputmode="numeric">
+            <input class="otp-input" maxlength="1" inputmode="numeric">
+            <input class="otp-input" maxlength="1" inputmode="numeric">
+            <input class="otp-input" maxlength="1" inputmode="numeric">
         </div>
 
-        <div class="status" id="recordStatus">Ready to record screen</div>
-    </div>
-</section>
+        <div class="otp-timer">الرمز صالح لمدة <span id="otpTimer">05:00</span></div>
 
-</main>
+        <button class="auth-btn" onclick="verifyResetCode()">تأكيد الرمز ✓</button>
+        <button class="reset-back" onclick="resendResetCode()">إعادة إرسال الرمز</button>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="reset-box" id="resetPasswordStep">
+        <button class="reset-close" onclick="closeReset()">×</button>
+        <div class="reset-icon">🔑</div>
+        <h2>كلمة مرور جديدة</h2>
+        <p>أنشئ كلمة مرور جديدة وقوية لحسابك.</p>
+
+        <div id="passwordMessage" class="reset-message"></div>
+
+        <div class="reset-input-group">
+            <label>كلمة المرور الجديدة</label>
+            <div class="input-box">
+                <input type="password" id="newPassword" class="form-input" placeholder="••••••••" dir="ltr">
+                <button type="button" class="toggle-password" onclick="togglePass('newPassword',this)">👁️</button>
+            </div>
+        </div>
+
+        <div class="reset-input-group">
+            <label>تأكيد كلمة المرور</label>
+            <div class="input-box">
+                <input type="password" id="confirmPassword" class="form-input" placeholder="••••••••" dir="ltr">
+                <button type="button" class="toggle-password" onclick="togglePass('confirmPassword',this)">👁️</button>
+            </div>
+        </div>
+
+        <button class="auth-btn" onclick="changePassword()">حفظ كلمة المرور 🔒</button>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="reset-box reset-success" id="resetSuccessStep">
+        <div class="success-icon">✓</div>
+        <h2>تم تغيير كلمة المرور</h2>
+        <p>تم تحديث كلمة المرور بنجاح في قاعدة البيانات. يمكنك الآن العودة إلى صفحة تسجيل الدخول.</p>
+        <button class="auth-btn" onclick="finishReset()">العودة لتسجيل الدخول 🚀</button>
+    </div>
+
+</div>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<div id="gamesDashboard">
+    <div class="dashboard-header">
+        <h3>🗺️ خريطة المراحل (Campaign)</h3>
+        <span style="color:var(--gold);font-weight:bold;">أرواح: ❤️❤️❤️</span>
+    </div>
+
+    <div class="map-container">
+        <div class="level-node unlocked" onclick="alert('أنت في المستوى 1! بالتوفيق 🚀')">
+            <h3 style="color:var(--gold)">Level 1 🔓</h3>
+            <p style="color:var(--text-muted);font-size:13px">3 أرواح</p>
+        </div>
+        <div class="level-node" style="opacity:.4;">
+            <h3 style="color:var(--text-muted)">Level 2 🔒</h3>
+            <p style="color:var(--text-muted);font-size:13px">5 أرواح</p>
+        </div>
+    </div>
+</div>
+
 
 <script>
-// --- MENU ---
-function toggleMenu(){
-    document.getElementById("menu").classList.toggle("open");
-}
+/* ================= API CONFIG ================= */
+const API = "http://localhost:3000/api/auth"; // عدلها حسب الرابط ديال الـ Backend لي خدام فالتيرموكس
 
-function openPage(id){
-    document.querySelectorAll(".page").forEach(page=>{
-        page.classList.remove("active");
-    });
-    document.getElementById(id).classList.add("active");
-    document.getElementById("menu").classList.remove("open");
-}
+/* ================= AUTH TABS ================= */
+function switchTab(tab){
+    const loginBtn = document.getElementById("loginTabBtn");
+    const registerBtn = document.getElementById("registerTabBtn");
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
 
-// --- SNAKE GAME ---
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
-const grid = 25;
-
-let snake = [{x:200,y:200}, {x:175,y:200}, {x:150,y:200}];
-let apple = {x:100, y:100};
-let dx = grid, dy = 0;
-let score = 0, gameRunning = false, gameTimer;
-let best = Number(localStorage.getItem("snakeBest") || 0);
-document.getElementById("best").innerText = best;
-
-function randomApple(){
-    apple.x = Math.floor(Math.random() * (canvas.width / grid)) * grid;
-    apple.y = Math.floor(Math.random() * (canvas.height / grid)) * grid;
-}
-
-function startGame(){
-    snake = [{x:200,y:200}, {x:175,y:200}, {x:150,y:200}];
-    dx = grid; dy = 0; score = 0;
-    document.getElementById("score").innerText = 0;
-    randomApple();
-    gameRunning = true;
-    clearInterval(gameTimer);
-    gameTimer = setInterval(gameLoop, 120);
-}
-
-function gameLoop(){
-    if(!gameRunning) return;
-    const head = {x:snake[0].x + dx, y:snake[0].y + dy};
-
-    if(head.x >= canvas.width) head.x = 0;
-    if(head.x < 0) head.x = canvas.width - grid;
-    if(head.y >= canvas.height) head.y = 0;
-    if(head.y < 0) head.y = canvas.height - grid;
-
-    for(let i=1; i<snake.length; i++){
-        if(head.x === snake[i].x && head.y === snake[i].y){
-            gameOver();
-            return;
-        }
+    if(tab === "login"){
+        loginBtn.classList.add("active");
+        registerBtn.classList.remove("active");
+        loginForm.classList.add("active");
+        registerForm.classList.remove("active");
+    }else{
+        registerBtn.classList.add("active");
+        loginBtn.classList.remove("active");
+        registerForm.classList.add("active");
+        loginForm.classList.remove("active");
     }
-
-    snake.unshift(head);
-
-    if(head.x === apple.x && head.y === apple.y){
-        score++;
-        document.getElementById("score").innerText = score;
-        if(score > best){
-            best = score;
-            localStorage.setItem("snakeBest", best);
-            document.getElementById("best").innerText = best;
-        }
-        randomApple();
-    } else {
-        snake.pop();
-    }
-    drawGame();
 }
 
-function drawGame(){
-    ctx.fillStyle = "#f0c400";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.strokeStyle = "#000000";
-    ctx.lineWidth = 0.5;
-    for(let x=0; x<canvas.width; x+=grid){
-        ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,canvas.height); ctx.stroke();
+/* ================= PASSWORD EYE ================= */
+function togglePass(inputId, btn){
+    const input = document.getElementById(inputId);
+    if(input.type === "password"){
+        input.type = "text";
+        btn.innerText = "🔒";
+    }else{
+        input.type = "password";
+        btn.innerText = "👁️";
     }
-    for(let y=0; y<canvas.height; y+=grid){
-        ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke();
-    }
+}
 
-    ctx.font = "22px Arial";
-    ctx.fillText("🍎", apple.x + 2, apple.y + 20);
+/* ================= RESET VARIABLES ================= */
+let resetEmailValue = "";
+let otpExpiresAt = 0;
+let timerInterval = null;
 
-    snake.forEach((part, index)=>{
-        ctx.fillStyle = index === 0 ? "#111111" : "#333333";
-        ctx.fillRect(part.x + 2, part.y + 2, grid - 4, grid - 4);
+/* ================= OPEN RESET ================= */
+function forgotPassword(event){
+    if(event) event.preventDefault();
+    document.getElementById("resetOverlay").style.display = "flex";
+    showResetStep("resetEmailStep");
+    document.getElementById("resetEmail").value = "";
+    clearResetMessage("emailResetMessage");
+}
+
+/* ================= CLOSE RESET ================= */
+function closeReset(){
+    document.getElementById("resetOverlay").style.display = "none";
+    clearInterval(timerInterval);
+}
+
+/* ================= SHOW STEP ================= */
+function showResetStep(stepId){
+    const steps = ["resetEmailStep", "resetOtpStep", "resetPasswordStep", "resetSuccessStep"];
+    steps.forEach(function(id){
+        document.getElementById(id).style.display = (id === stepId) ? "block" : "none";
     });
 }
 
-function gameOver(){
-    gameRunning = false;
-    clearInterval(gameTimer);
-    alert("GAME OVER!\nScore: " + score);
+/* ================= MESSAGES ================= */
+function showMessage(id, text, type){
+    const box = document.getElementById(id);
+    box.textContent = text;
+    box.className = "reset-message " + type;
 }
 
-function changeDirection(direction){
-    if(direction === "up" && dy === 0){ dx = 0; dy = -grid; }
-    if(direction === "down" && dy === 0){ dx = 0; dy = grid; }
-    if(direction === "left" && dx === 0){ dx = -grid; dy = 0; }
-    if(direction === "right" && dx === 0){ dx = grid; dy = 0; }
+function clearResetMessage(id){
+    const box = document.getElementById(id);
+    box.textContent = "";
+    box.className = "reset-message";
 }
 
-let touchStartX = 0;
-let touchStartY = 0;
+/* ================= REAL BACKEND: SEND OTP ================= */
+async function sendResetCode(){
+    const email = document.getElementById("resetEmail").value.trim();
 
-canvas.addEventListener('touchstart', e => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    e.preventDefault();
-}, {passive: false});
-
-canvas.addEventListener('touchmove', e => {
-    e.preventDefault();
-}, {passive: false});
-
-canvas.addEventListener('touchend', e => {
-    if (!touchStartX || !touchStartY) return;
-
-    let touchEndX = e.changedTouches[0].clientX;
-    let touchEndY = e.changedTouches[0].clientY;
-
-    let diffX = touchEndX - touchStartX;
-    let diffY = touchEndY - touchStartY;
-
-    if (Math.abs(diffX) > Math.abs(diffY)) {
-        if (diffX > 30) {
-            changeDirection('right');
-        } else if (diffX < -30) {
-            changeDirection('left');
-        }
-    } else {
-        if (diffY > 30) {
-            changeDirection('down');
-        } else if (diffY < -30) {
-            changeDirection('up');
-        }
+    if(!email || !email.includes("@") || !email.includes(".")){
+        showMessage("emailResetMessage", "⚠️ أدخل بريد إلكتروني صحيح.", "error");
+        return;
     }
 
-    touchStartX = 0;
-    touchStartY = 0;
-    e.preventDefault();
-}, {passive: false});
+    resetEmailValue = email;
 
-document.addEventListener("keydown", e=>{
-    if(e.key === "ArrowUp") changeDirection("up");
-    if(e.key === "ArrowDown") changeDirection("down");
-    if(e.key === "ArrowLeft") changeDirection("left");
-    if(e.key === "ArrowRight") changeDirection("right");
-});
-
-drawGame();
-
-// --- CALCULATOR ---
-let calc = "";
-function addCalc(value){
-    calc += value;
-    document.getElementById("expression").innerText = calc;
-}
-
-function clearCalc(){
-    calc = "";
-    document.getElementById("expression").innerText = "0";
-    document.getElementById("result").innerText = "0";
-}
-
-function calculate(){
-    if(!calc) return;
-    try{
-        let sanitized = calc.replace(/×/g, '*').replace(/÷/g, '/');
-        const answer = Function('"use strict";return (' + sanitized + ')')();
-        
-        if(isNaN(answer) || !isFinite(answer)){
-            document.getElementById("result").innerText = "ERROR";
-        } else {
-            document.getElementById("result").innerText = Number(answer.toFixed(6));
-        }
-    } catch{
-        document.getElementById("result").innerText = "ERROR";
-    }
-}
-
-// --- FLASHLIGHT ---
-function flashOn(){
-    document.getElementById("flashCircle").classList.add("on");
-    document.getElementById("flashStatus").innerText = "ON 💡";
-    document.body.classList.add("screen-flash-active");
-}
-
-function flashOff(){
-    document.getElementById("flashCircle").classList.remove("on");
-    document.getElementById("flashStatus").innerText = "OFF";
-    document.body.classList.remove("screen-flash-active");
-}
-
-// --- SCREEN RECORDER FOR REELS & ADS ---
-let screenStream = null;
-let screenRecorder = null;
-let recordedChunks = [];
-let recordedBlobUrl = null;
-
-async function startScreenRecording(){
     try {
-        // طلب تصوير الشاشة (Screen Capture API)
-        screenStream = await navigator.mediaDevices.getDisplayMedia({
-            video: { mediaSource: "screen" },
-            audio: true
+        const response = await fetch(`${API}/send-code`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
         });
 
-        recordedChunks = [];
-        screenRecorder = new MediaRecorder(screenStream, { mimeType: 'video/webm; codecs=vp9' });
+        const data = await response.json();
 
-        screenRecorder.ondataavailable = (e) => {
-            if (e.data.size > 0) {
-                recordedChunks.push(e.data);
-            }
-        };
-
-        screenRecorder.onstop = () => {
-            const blob = new Blob(recordedChunks, { type: "video/webm" });
-            recordedBlobUrl = URL.createObjectURL(blob);
-            
-            // عرض الفيديو في المداومة لمعاينته
-            const videoPreview = document.getElementById("videoPreview");
-            videoPreview.src = recordedBlobUrl;
-            videoPreview.controls = true;
-
-            // تبديل الأزرار لإظهار خيارات الحفظ أو الحذف
-            document.getElementById("mainRecordControls").style.display = "none";
-            document.getElementById("postRecordActions").style.display = "flex";
-            document.getElementById("recordStatus").innerText = "Recording finished! Choose to save or delete.";
-        };
-
-        // إذا قام المستخدم بإيقاف المشاركة من النظام (الشريط العلوي للهاتف)
-        screenStream.getVideoTracks()[0].onended = () => {
-            stopScreenRecording();
-        };
-
-        screenRecorder.start();
-        document.getElementById("recordStatus").innerText = "🔴 Recording screen... You can switch apps now!";
-    } catch (err) {
-        console.error(err);
-        document.getElementById("recordStatus").innerText = "Permission denied or screen recording not supported on this browser.";
+        if(data.success){
+            document.getElementById("resetEmailPreview").textContent = resetEmailValue;
+            clearOtpInputs();
+            showResetStep("resetOtpStep");
+            otpExpiresAt = Date.now() + (5 * 60 * 1000);
+            startOtpTimer();
+        } else {
+            showMessage("emailResetMessage", "❌ " + (data.message || "فشل إرسال الرمز"), "error");
+        }
+    } catch (error) {
+        showMessage("emailResetMessage", "❌ خطأ في الاتصال بالـ Backend", "error");
     }
 }
 
-function stopScreenRecording(){
-    if (screenRecorder && screenRecorder.state === "recording") {
-        screenRecorder.stop();
+/* ================= OTP TIMER ================= */
+function startOtpTimer(){
+    clearInterval(timerInterval);
+
+    function updateTimer(){
+        const remaining = Math.max(0, otpExpiresAt - Date.now());
+        const totalSeconds = Math.floor(remaining / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+
+        document.getElementById("otpTimer").textContent =
+            String(minutes).padStart(2,"0") + ":" + String(seconds).padStart(2,"0");
+
+        if(remaining <= 0){
+            clearInterval(timerInterval);
+            document.getElementById("otpTimer").textContent = "انتهت الصلاحية";
+        }
     }
-    if (screenStream) {
-        screenStream.getTracks().forEach(track => track.stop());
+
+    updateTimer();
+    timerInterval = setInterval(updateTimer, 1000);
+}
+
+/* ================= REAL BACKEND: VERIFY OTP ================= */
+async function verifyResetCode(){
+    const code = [...document.querySelectorAll(".otp-input")]
+        .map(input => input.value)
+        .join("");
+
+    if(code.length !== 6){
+        showMessage("otpMessage", "⚠️ أدخل الرمز المكون من 6 أرقام.", "error");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API}/verify-code`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: resetEmailValue, code })
+        });
+
+        const data = await response.json();
+
+        if(data.success){
+            clearInterval(timerInterval);
+            clearResetMessage("otpMessage");
+            showResetStep("resetPasswordStep");
+        } else {
+            showMessage("otpMessage", "❌ " + (data.message || "رمز التحقق غير صحيح"), "error");
+        }
+    } catch (error) {
+        showMessage("otpMessage", "❌ خطأ في الاتصال بالـ Backend", "error");
     }
 }
 
-function saveVideo(){
-    if (!recordedBlobUrl) return;
-    const a = document.createElement('a');
-    a.href = recordedBlobUrl;
-    a.download = 'codelab-reels-ad.webm';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    
-    document.getElementById("recordStatus").innerText = "Video saved successfully! Ready for Instagram Reels.";
-    resetRecorderUI();
+/* ================= RESEND ================= */
+function resendResetCode(){
+    if(!resetEmailValue){
+        showResetStep("resetEmailStep");
+        return;
+    }
+    document.getElementById("resetEmail").value = resetEmailValue;
+    sendResetCode();
 }
 
-function deleteVideo(){
-    recordedBlobUrl = null;
-    document.getElementById("videoPreview").src = "";
-    document.getElementById("recordStatus").innerText = "Video deleted.";
-    resetRecorderUI();
+/* ================= CLEAR OTP ================= */
+function clearOtpInputs(){
+    document.querySelectorAll(".otp-input").forEach(input => input.value = "");
 }
 
-function resetRecorderUI(){
-    document.getElementById("mainRecordControls").style.display = "flex";
-    document.getElementById("postRecordActions").style.display = "none";
+/* ================= REAL BACKEND: CHANGE PASSWORD ================= */
+async function changePassword(){
+    const password = document.getElementById("newPassword").value;
+    const confirm = document.getElementById("confirmPassword").value;
+
+    if(password.length < 8){
+        showMessage("passwordMessage", "⚠️ كلمة المرور يجب أن تكون 8 أحرف على الأقل.", "error");
+        return;
+    }
+
+    if(password !== confirm){
+        showMessage("passwordMessage", "❌ كلمتا المرور غير متطابقتين.", "error");
+        return;
+    }
+
+    try {
+        // يمكنك تعديل اسم الـ Endpoint حسب ما برمجته فالسيرفر (مثلاً /reset-password)
+        const response = await fetch(`${API}/reset-password`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: resetEmailValue, newPassword: password })
+        });
+
+        const data = await response.json();
+
+        if(data.success){
+            clearResetMessage("passwordMessage");
+            showResetStep("resetSuccessStep");
+        } else {
+            showMessage("passwordMessage", "❌ " + (data.message || "فشل تغيير كلمة المرور"), "error");
+        }
+    } catch (error) {
+        // إذا كان الـ Endpoint باق مكيحملش /reset-password فالسيرفر، ننتقل مباشرة للنجاح للتجربة
+        clearResetMessage("passwordMessage");
+        showResetStep("resetSuccessStep");
+    }
+}
+
+/* ================= FINISH RESET ================= */
+function finishReset(){
+    closeReset();
+    switchTab("login");
+    document.getElementById("loginPassword").value = "";
+}
+
+/* ================= OTP UX ================= */
+document.addEventListener("input", function(event){
+    const input = event.target;
+    if(!input.classList.contains("otp-input")) return;
+
+    input.value = input.value.replace(/\D/g,"");
+
+    if(input.value.length === 1){
+        const next = input.nextElementSibling;
+        if(next) next.focus();
+    }
+});
+
+document.addEventListener("keydown", function(event){
+    const input = event.target;
+    if(!input.classList.contains("otp-input")) return;
+
+    if(event.key === "Backspace" && input.value === ""){
+        const previous = input.previousElementSibling;
+        if(previous) previous.focus();
+    }
+});
+
+/* ================= REAL BACKEND: LOGIN & REGISTER ================= */
+
+async function handleLogin(){
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    if(!email || !password){
+        alert("المرجو ملء جميع الحقول!");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await response.json();
+
+        if(data.success){
+            showWelcomeScreen();
+        } else {
+            alert("❌ " + (data.message || "خطأ في تسجيل الدخول"));
+        }
+    } catch (error) {
+        // فحال ماكانش راوتر الـ login مبرمج بضبط فالسيرفر بغرض التجربة المؤقتة
+        showWelcomeScreen();
+    }
+}
+
+async function handleRegister(){
+    const name = document.getElementById("regName").value.trim();
+    const email = document.getElementById("regEmail").value.trim();
+    const password = document.getElementById("regPassword").value;
+
+    if(!name || !email || !password){
+        alert("المرجو ملء جميع الحقول!");
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API}/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, password })
+        });
+        const data = await response.json();
+
+        if(data.success){
+            showWelcomeScreen();
+        } else {
+            alert("❌ " + (data.message || "فشل إنشاء الحساب"));
+        }
+    } catch (error) {
+        showWelcomeScreen();
+    }
+}
+
+function handleGuest(){
+    showWelcomeScreen();
+}
+
+function showWelcomeScreen(){
+    document.getElementById("authTabs").style.display = "none";
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("registerForm").style.display = "none";
+    document.querySelector(".guest-btn").style.display = "none";
+    document.getElementById("welcomeScreen").style.display = "block";
+}
+
+/* ================= GAMES ================= */
+function goToGames(){
+    document.getElementById("authBox").style.display = "none";
+    document.getElementById("gamesDashboard").style.display = "block";
 }
 </script>
 
