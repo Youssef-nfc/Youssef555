@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Develop digital | مواقع وحلول NFC رقمية للمشاريع في المغرب</title>
+<meta name="description" content="Develop digital تقدم مواقع وصفحات تعريفية وحلول NFC رقمية للمحلات والمشاريع في المغرب.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/pages.css">
+<style>
+:root{--navy:#091426;--blue:#18304d;--saffron:#e8bd68;--orange:#e87836;--mist:#111d2d;--surface:#0c1725;--ink:#f0f2f5;--muted:#b8c2ce;
+--font:"Readex Pro","Segoe UI",Tahoma,"Noto Sans Arabic",Arial,sans-serif}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--ink);background:#070b12;line-height:1.8;font-size:1.05rem}
+:focus-visible{outline:3px solid var(--saffron);outline-offset:3px}
+.wrap{max-width:1040px;margin-inline:auto;padding-inline:1.25rem}
+button{font:inherit;cursor:pointer}
+
+.hero{position:relative;color:#fff;padding-block:1.25rem 2.5rem;overflow:hidden;
+background:radial-gradient(circle at 12% 18%,rgba(24,48,77,.9),transparent 46%),radial-gradient(circle at 88% 85%,rgba(232,120,54,.2),transparent 42%),var(--navy)}
+.hero::before{content:"";position:absolute;inset:0;opacity:.09;
+background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpath d='M32 4l7 15 15 7-15 7-7 15-7-15-15-7 15-7z' fill='none' stroke='%23fff' stroke-width='1.2'/%3E%3C/svg%3E")}
+.hero .wrap{position:relative}
+.hi{font-weight:500;color:var(--saffron);padding-block:.5rem 2.5rem}
+h1{font-size:2.6rem;line-height:1.4;font-weight:700;margin-bottom:1rem}
+.lead{color:#d6dbf7;max-width:36em;font-size:1.12rem}
+.hero-actions{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem}
+.hero-link{display:inline-flex;align-items:center;min-height:46px;padding:.65rem 1rem;border:1px solid var(--saffron);border-radius:8px;background:#080e18;color:var(--saffron);text-decoration:none;font-weight:500;transition:background-color .18s ease,color .18s ease,transform .18s ease,border-color .18s ease}
+.hero-link:hover{background:var(--blue);border-color:var(--orange);color:#fff;transform:translateY(-2px)}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:.9rem;margin-block:2.5rem 2rem}
+.tile{min-width:0;background:linear-gradient(145deg,rgba(24,48,77,.62),rgba(8,14,24,.88));border:1px solid #2a3d54;border-radius:8px;padding:.7rem .65rem .8rem;text-align:center;font-size:.92rem;color:#f0f2f5;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.tile:hover{transform:translateY(-4px);border-color:var(--saffron);box-shadow:0 10px 24px rgba(0,0,0,.3)}
+.tile svg{width:100%;height:auto;display:block}
+.cue{display:flex;flex-direction:column;align-items:center;gap:.5rem;color:#fff;text-decoration:none;font-weight:500}
+.cue svg{width:46px;height:46px;animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+@media(prefers-reduced-motion:reduce){.cue svg{animation:none}html{scroll-behavior:auto}}
+
+section{padding-block:3.25rem}
+h2{font-size:1.6rem;font-weight:700;margin-bottom:.4rem;color:#f3ead8;border-inline-start:3px solid var(--orange);padding-inline-start:.65rem}
+.sub{color:var(--muted);margin-bottom:1.5rem;font-size:.95rem}
+.services{list-style:none;padding:0;border-top:2px solid var(--saffron)}
+.services li{display:grid;gap:.8rem;padding:1.25rem .8rem;border-bottom:1px solid #26364a;align-items:center;border-inline-start:3px solid transparent;transition:background-color .2s ease,border-color .2s ease,transform .2s ease}
+.services li:hover{background:#0d1b2c;border-inline-start-color:var(--orange);transform:translateX(-3px)}
+@media(min-width:760px){.services li{grid-template-columns:1fr auto;gap:2rem}}
+.services strong{display:block;color:var(--saffron);font-weight:700}
+.thumbs{display:flex;flex-wrap:wrap;gap:.6rem;min-width:0}
+.thumb{max-width:100%;border:0;background:none;padding:0;cursor:pointer}
+.phone{width:min(14em,100%);min-height:19em;background:linear-gradient(160deg,#12243a,#0a1422);border:.5em solid var(--blue);border-radius:2em;padding:1.4em 1em 1em;display:flex;flex-direction:column;gap:.5em;text-align:center;color:var(--ink);font-size:1rem;transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease}
+.phone i{display:block;width:3em;height:.5em;border-radius:1em;background:var(--navy);margin:-.6em auto .3em}
+.phone b{color:var(--saffron);font-size:.95em}
+.phone span{background:#1a2b40;border-radius:.6em;padding:.45em;font-size:.85em;color:#e5eaf0}
+.phone.sm{font-size:.42rem;min-height:19em}
+.thumb:hover .phone,.thumb:focus-visible .phone{border-color:var(--orange);transform:translateY(-3px);box-shadow:0 10px 22px rgba(0,0,0,.32)}
+
+.steps{background:#0c1725;border-block:1px solid #1d2b3e}
+.steps ol{list-style:none;padding:0;display:grid;gap:1.5rem;margin-top:1.5rem}
+@media(min-width:800px){.steps ol{grid-template-columns:repeat(3,1fr)}}
+.steps li{border-inline-start:4px solid var(--orange);padding-inline-start:1rem;color:#d5dce5}
+.steps b{display:block;color:var(--saffron)}
+.emo{font-size:1.8rem;line-height:1.3}
+
+.contact{background:radial-gradient(circle at 50% 0,rgba(24,48,77,.72),transparent 70%),#080e18;color:#fff;text-align:center;border-block-start:1px solid #28364a}
+.contact h2{color:#fff}
+.contact p{color:#d6dbf7;margin:0 auto 1.5rem;max-width:30em}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--saffron);color:#111721;border:1px solid var(--saffron);text-decoration:none;font-weight:700;padding:.75rem 1.7rem;border-radius:8px;min-height:46px;box-shadow:0 5px 18px rgba(232,189,104,.16);transition:background-color .18s ease,color .18s ease,transform .18s ease,box-shadow .18s ease}
+.btn:hover{background:var(--orange);color:#090f18;border-color:var(--orange);transform:translateY(-2px);box-shadow:0 8px 22px rgba(232,120,54,.25)}
+footer{background:#05080e;color:#bbc4cf;font-size:.92rem;padding-block:1rem;border-block-start:1px solid #1b293a}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
+footer a,footer button{color:inherit;background:none;border:0;text-decoration:none;padding:.3rem;transition:color .18s ease}
+footer a:hover,footer button:hover{color:var(--saffron)}
+dialog{border:1px solid #2a3d54;border-radius:8px;padding:1.5rem;max-width:min(92vw,460px);background:#0c1725;color:var(--ink);text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+dialog::backdrop{background:rgba(3,7,13,.78)}
+dialog .phone{margin:0 auto 1rem;font-size:1.15rem}
+dialog .close{margin-top:1rem;background:#080e18;color:var(--saffron);border:1px solid var(--saffron);border-radius:8px;padding:.5rem 1.5rem;transition:background-color .18s ease,color .18s ease}
+dialog .close:hover{background:var(--saffron);color:var(--navy)}
+dialog.text{text-align:start}
+@media(max-width:620px){h1{font-size:1.9rem}.hero-actions{align-items:stretch}.hero-actions>a{width:100%;justify-content:center}.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.wrap{padding-inline:1rem}}
+@media(hover:none){.tile:hover,.services li:hover,.btn:hover,.hero-link:hover,.thumb:hover .phone{transform:none}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+<div class="wrap">
+  <nav class="topbar" aria-label="التنقل الرئيسي">
+    <a class="brand" href="index.html" dir="ltr">Develop digital <span dir="rtl">حلول رقمية</span></a>
+    <div class="navlinks">
+      <a href="index.html" aria-current="page">الرئيسية</a>
+      <a href="services.html">الخدمات</a>
+      <a href="nfc.html">حلول NFC</a>
+      <a href="#contact">تواصل</a>
+    </div>
+  </nav>
+  <p class="hi">Develop digital | حلول رقمية للمحلات والمشاريع في المغرب</p>
+  <h1>خلّي مشروعك حاضر رقمياً، وقرّب خدماتك لزبائنك بلمسة NFC</h1>
+  <p class="lead">أصمّم مواقع وصفحات تعريفية، وبطاقات وصفحات NFC ذكية للتقييمات والتواصل. حلول واضحة تساعد زبائنك يلقاو معلوماتك ويتواصلو معك بسهولة.</p>
+  <div class="hero-actions">
+    <a class="btn" data-wa>ناقش مشروعك على واتساب</a>
+    <a class="hero-link" href="services.html">اكتشف جميع الخدمات</a>
+  </div>
+
+  <div class="gallery">
+    <div class="tile"><svg viewBox="0 0 160 110" aria-hidden="true"><rect x="18" y="14" width="124" height="82" rx="12" fill="#fff"/><text x="80" y="56" text-anchor="middle" font-size="26" fill="#e2bd68">★★★★★</text><rect x="42" y="68" width="76" height="6" rx="3" fill="#d5daeb"/><rect x="56" y="80" width="48" height="6" rx="3" fill="#d5daeb"/></svg>تقييمات جوجل</div>
+    <div class="tile"><svg viewBox="0 0 160 110" aria-hidden="true"><g transform="rotate(-6 80 57)"><rect x="20" y="22" width="120" height="70" rx="10" fill="#0a1730" stroke="#e2bd68" stroke-width="2"/><g fill="none" stroke="#e2bd68" stroke-width="4" stroke-linecap="round"><path d="M70 45a14 14 0 0 1 0 24"/><path d="M80 38a24 24 0 0 1 0 38"/><path d="M90 31a34 34 0 0 1 0 52"/></g></g></svg>بطاقة NFC</div>
+    <div class="tile"><svg viewBox="0 0 160 110" aria-hidden="true"><g fill="#e2bd68"><circle cx="45" cy="55" r="24"/><circle cx="105" cy="38" r="18"/><circle cx="112" cy="80" r="14"/></g><g fill="none" stroke="#0a1730" stroke-width="3" stroke-linecap="round"><path d="M38 47a10 10 0 0 1 0 16"/><path d="M45 41a18 18 0 0 1 0 28"/><path d="M100 31a7 7 0 0 1 0 14"/><path d="M106 27a13 13 0 0 1 0 22"/></g></svg>ملصقات NFC</div>
+    <div class="tile"><svg viewBox="0 0 160 110" aria-hidden="true"><rect x="30" y="16" width="100" height="78" rx="8" fill="#e2bd68"/><rect x="42" y="30" width="48" height="8" rx="4" fill="#0a1730"/><rect x="42" y="46" width="76" height="5" rx="2.5" fill="#0a1730" opacity=".5"/><rect x="42" y="58" width="60" height="5" rx="2.5" fill="#0a1730" opacity=".5"/><rect x="42" y="74" width="34" height="10" rx="5" fill="#10274c"/></svg>بطاقة إعلانية للمحل</div>
+    <div class="tile"><svg viewBox="0 0 160 110" aria-hidden="true"><rect x="10" y="92" width="140" height="6" rx="3" fill="#b38c3f"/><path d="M52 92l8-72h40l8 72z" fill="#fff"/><g fill="#0a1730"><rect x="68" y="30" width="10" height="10"/><rect x="82" y="30" width="10" height="10"/><rect x="68" y="44" width="10" height="10"/><rect x="82" y="58" width="10" height="10"/><rect x="68" y="72" width="24" height="6"/></g></svg>ستاند QR للطاولة</div>
+  </div>
+
+  <a class="cue" href="#services">
+    <span>اكتشف ما أقدّمه لمحلك</span>
+    <svg viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="21" fill="none" stroke="#e2bd68" stroke-width="2"/><path d="M14 19l9 9 9-9" fill="none" stroke="#e2bd68" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
+</div>
+</header>
+
+<main>
+<section id="services">
+  <div class="wrap">
+    <h2>ماذا أقدّم لمحلك</h2>
+    <p class="sub">أمثلة توضيحية: اضغط على أي صورة صغيرة لتكبيرها.</p>
+    <ul class="services">
+      <li><div><strong>موقع يعمل على الهاتف</strong>صفحة واضحة بخدماتك وعنوانك وساعات العمل، مع الحجز والطلبات.</div><div class="thumbs" data-k="site"></div></li>
+      <li><div><strong>أزرار تواصل مباشر</strong>اتصال أو مراسلة بضغطة واحدة عبر واتساب، إنستغرام، فيسبوك، تيك توك، لينكدين، وأي منصة يستعملها محلك.</div><div class="thumbs" data-k="social"></div></li>
+      <li><div><strong>بطاقة NFC لتقييمات جوجل</strong>الزبون يقرّب هاتفه من البطاقة فتفتح له صفحة تقييم محلك. تُوضع فوق الكونتوار أو بجانب آلة الأداء أو على الطاولة.</div><div class="thumbs" data-k="nfc"></div></li>
+      <li><div><strong>صفحة NFC رقمية لروابط نشاطك</strong>اجمع واتساب وحسابات التواصل وموقع محلك في صفحة واحدة، يفتحها الزبون بلمسة من هاتفه على البطاقة.</div><div class="thumbs" data-k="profile"></div></li>
+      <li><div><strong>صفحتك على خرائط جوجل</strong>أساعدك على ترتيب المعلومات والصور وساعات العمل.</div><div class="thumbs" data-k="maps"></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="wrap">
+    <h2>كيف نعمل معاً لتطوير مشروعك</h2>
+    <ol>
+      <li><span class="emo">💬</span><b>نتحدث</b>تخبرني عن نشاطك وما تحتاجه: موقع، صفحة تعريف (Landing page)، أو بطاقة NFC.</li>
+      <li><span class="emo">🗂️</span><b>نماذج من أعمالي</b>أرسل لك نماذج من مواقع صمّمتها، لترى مستوى عملي وطريقته قبل أي التزام.</li>
+      <li><span class="emo">🚀</span><b>التسليم</b>أسلّم الموقع جاهزاً ومؤمَّناً بـ HTTPS، في مدة نحددها معاً.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <h2>اتصل بنا</h2>
+    <p>أخبرني عن محلك وما تحتاجه، وأرد عليك في أقرب وقت.</p>
+    <a class="btn" data-wa>راسلني على واتساب</a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="#contact">اتصل بنا</a>
+    <button type="button" id="pv">سياسة الخصوصية</button>
+    <span>🔒 موقع مؤمَّن بـ HTTPS · © Develop digital</span>
+  </div>
+</footer>
+
+<dialog id="demo"><div id="demoBody"></div><button class="close" type="button">إغلاق</button></dialog>
+<dialog id="privacy" class="text">
+  <h2>سياسة الخصوصية</h2>
+  <p>لا يجمع هذا الموقع أي بيانات شخصية، ولا يستعمل ملفات تعريف الارتباط أو أدوات تتبّع.</p><br>
+  <p>عند الضغط على زر واتساب تنتقل إلى تطبيق واتساب، وتخضع رسالتك لسياسته. يحمّل الموقع خطاً من Google Fonts، وقد يستقبل خادم جوجل عنوان IP الخاص بك لهذا الغرض.</p><br>
+  <p>لأي سؤال عن بياناتك، تواصل معي عبر واتساب.</p>
+  <button class="close" type="button">إغلاق</button>
+</dialog>
+
+<script>
+const WA="212600000000"; /* غيّر رقمك هنا فقط، بالصيغة الدولية بلا صفر ولا + */
+const MSG=encodeURIComponent("السلام عليكم، أريد الاستفسار عن موقع إلكتروني وحلول NFC لمشروعي.");
+document.querySelectorAll("[data-wa]").forEach(a=>a.href=`https://wa.me/${WA}?text=${MSG}`);
+
+const D={
+site:[{t:"الصفحة الرئيسية",l:["خدماتنا","العنوان: شارع ...","ساعات العمل: 9:00 – 22:00"]},{t:"الحجز والطلبات",l:["اختر الخدمة","اختر اليوم والساعة","تأكيد الحجز"]}],
+social:[{t:"أزرار التواصل",l:["واتساب","إنستغرام","فيسبوك","تيك توك","لينكدين"]}],
+nfc:[{t:"البطاقة فوق الكونتوار",l:["بطاقة NFC بجانب آلة الأداء أو على الطاولة"]},{t:"الزبون يقرّب هاتفه",l:["قرّب الهاتف من البطاقة","تفتح صفحة التقييم مباشرة"]},{t:"يكتب تقييمه",l:["★★★★★","اكتب رأيك في المحل","نشر"]}],
+profile:[{t:"ملف نشاطك الرقمي",l:["اسم النشاط","واتساب","إنستغرام","الموقع على الخريطة"]},{t:"بطاقة NFC",l:["قرّب الهاتف من البطاقة","تظهر روابط نشاطك","تواصل بضغطة واحدة"]}],
+maps:[{t:"صفحة المحل على الخريطة",l:["الاسم والعنوان","الصور","ساعات العمل","رقم الهاتف"]}]};
+const mk=(f,c)=>`<div class="phone ${c}"><i></i><b>${f.t}</b>${f.l.map(x=>`<span>${x}</span>`).join("")}</div>`;
+const demo=document.getElementById("demo"),body=document.getElementById("demoBody");
+document.querySelectorAll("[data-k]").forEach(box=>{
+  const k=box.dataset.k;
+  box.innerHTML=D[k].map((f,i)=>`<button class="thumb" data-i="${i}" aria-label="${f.t}">${mk(f,"sm")}</button>`).join("");
+  box.onclick=e=>{const b=e.target.closest(".thumb");if(!b)return;const f=D[k][b.dataset.i];body.innerHTML=mk(f,"")+`<p>${f.t} (مثال توضيحي)</p>`;demo.showModal();};
+});
+const priv=document.getElementById("privacy");
+document.getElementById("pv").onclick=()=>priv.showModal();
+[demo,priv].forEach(d=>{d.onclick=e=>{if(e.target===d||e.target.classList.contains("close"))d.close()}});
+</script>
+</body>
+</html>
