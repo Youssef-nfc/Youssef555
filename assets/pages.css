@@ -55,3 +55,21 @@ footer a:hover{color:var(--saffron)}
 @media(max-width:620px){.wrap{padding-inline:1rem}.topbar{align-items:flex-start;flex-direction:column;padding-bottom:1.25rem}.navlinks{width:100%;justify-content:flex-start;margin-inline:-.5rem}.navlinks a{padding:.4rem .5rem;font-size:.86rem}h1{font-size:1.9rem}.hero-actions{align-items:stretch}.hero-actions>a{width:100%;justify-content:center}.portfolio-grid{grid-template-columns:minmax(0,1fr)}.portfolio-item--wide{grid-column:auto}.portfolio-item--wide img{aspect-ratio:4/3;max-height:none;object-fit:cover}.services li{padding-inline:.65rem}}
 @media(hover:none){.portfolio-item:hover,.services li:hover,.btn:hover,.hero-link:hover{transform:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+/* Polished, consistent action controls */
+html body .btn,html body .hero-link{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.65rem;min-height:52px;padding:.75rem 1.25rem;border-radius:12px;font-weight:700;line-height:1.35;text-decoration:none;transition:background .2s ease,border-color .2s ease,color .2s ease,transform .2s ease,box-shadow .2s ease}
+html body .btn{color:#111721;background:linear-gradient(135deg,#f3d99f,#e5b85d);border:1px solid #f5dfad;box-shadow:0 8px 22px rgba(232,189,104,.2),inset 0 1px rgba(255,255,255,.42)}
+html body .btn::after{content:"↗";display:inline-block;font-size:1.05em;line-height:1;transition:transform .2s ease}
+html body .btn:hover{color:#10151d;background:linear-gradient(135deg,#f6dfa9,#eda267);border-color:#f6d7a0;transform:translateY(-2px);box-shadow:0 12px 26px rgba(232,120,54,.24),inset 0 1px rgba(255,255,255,.35)}
+html body .btn:hover::after{transform:translate(2px,-2px)}
+html body .hero-link{color:#f3d99f;background:rgba(255,255,255,.035);border:1px solid rgba(232,189,104,.58);box-shadow:inset 0 1px rgba(255,255,255,.04)}
+html body .hero-link::after{content:"←";display:inline-block;font-size:1.05em;line-height:1;transition:transform .2s ease}
+html body .hero-link:hover{color:#fff;background:rgba(232,189,104,.12);border-color:var(--saffron);transform:translateY(-2px);box-shadow:0 9px 22px rgba(0,0,0,.2)}
+html body .hero-link:hover::after{transform:translateX(-3px)}
+html body .btn:active,html body .hero-link:active{transform:translateY(0) scale(.985);box-shadow:inset 0 2px 5px rgba(0,0,0,.14)}
+html body .btn:focus-visible,html body .hero-link:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.navlinks a{position:relative;transition:background .2s ease,color .2s ease,transform .2s ease}
+.navlinks a:hover{transform:translateY(-1px)}
+footer .wrap>a,footer .wrap>button{display:inline-flex;align-items:center;min-height:40px;padding:.45rem .75rem;border:1px solid transparent;border-radius:9px;transition:background .2s ease,border-color .2s ease,color .2s ease}
+footer .wrap>a:hover,footer .wrap>button:hover{background:rgba(232,189,104,.09);border-color:rgba(232,189,104,.25)}
+@media(hover:none){html body .btn:hover,html body .hero-link:hover,.navlinks a:hover{transform:none}}
